@@ -35,10 +35,16 @@
 (define-key eglot-mode-map (kbd "C-c f") 'eglot-format)
 
 (require 'electric)
+(defun add-electric-to-hook (hook)
+  (add-hook hook 'electric-pair-mode)
+  (add-hook hook 'electric-indent-mode)
+  (add-hook hook 'electric-quote-mode))
+
 (require 'company)
 
 ;; emacs-lisp
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
+(add-electric-to-hook 'emacs-lisp-mode-hook)
 
 ;; c/c++
 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
@@ -46,16 +52,10 @@
 (add-hook 'c++-mode-hook 'eglot-ensure)
 (add-hook 'c-mode-hook 'company-mode)
 (add-hook 'c++-mode-hook 'company-mode)
-(add-hook 'c-mode-hook 'electric-pair-mode)
-(add-hook 'c-mode-hook 'electric-indent-mode)
-(add-hook 'c-mode-hook 'electric-quote-mode)
-(add-hook 'c++-mode-hook 'electric-pair-mode)
-(add-hook 'c++-mode-hook 'electric-indent-mode)
-(add-hook 'c++-mode-hook 'electric-quote-mode)
+(add-electric-to-hook 'c-mode-hook)
+(add-electric-to-hook 'c++-mode-hook)
 
 ;; rust
 (add-hook 'rust-mode-hook 'eglot-ensure)
-(add-hook 'rust-mode-hook 'compay-mode)
-(add-hook 'rust-mode-hook 'electric-pair-mode)
-(add-hook 'rust-mode-hook 'electric-indent-mode)
-(add-hook 'rust-mode-hook 'electric-quote-mode)
+(add-hook 'rust-mode-hook 'company-mode)
+(add-electric-to-hook 'rust-mode-hook)
