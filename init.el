@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(tsdh-light))
  '(global-display-line-numbers-mode t)
- '(package-selected-packages '(company))
+ '(package-selected-packages '(rust-mode company))
  '(scroll-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -25,25 +25,37 @@
 (setq-default tab-width 4)
 (defvaralias 'c-basic-offset 'tab-width)
 
-;; enable company-mode in some mode hooks
-(require 'company)
-(add-hook 'emacs-lisp-mode-hook 'company-mode)
-(add-hook 'c-mode-hook 'company-mode)
-(add-hook 'c++-mode-hook 'company-mode)
+(require 'eldoc)
+(global-eldoc-mode)
+(global-set-key (kbd "C-c d") 'eldoc)
 
-;; enable lsp in some mode hooks
+;; enable lsp
 (require 'eglot)
-;; set key for eglot-format
+;; set key for eglot-mode
 (define-key eglot-mode-map (kbd "C-c f") 'eglot-format)
+
+(require 'electric)
+(require 'company)
+
+;; emacs-lisp
+(add-hook 'emacs-lisp-mode-hook 'company-mode)
+
+;; c/c++
 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
 (add-hook 'c-mode-hook 'eglot-ensure)
 (add-hook 'c++-mode-hook 'eglot-ensure)
-;;(add-hook 'rust-mode-hook 'eglot-ensure)
-
-(require 'electric)
+(add-hook 'c-mode-hook 'company-mode)
+(add-hook 'c++-mode-hook 'company-mode)
 (add-hook 'c-mode-hook 'electric-pair-mode)
-(add-hook 'c++-mode-hook 'electric-pair-mode)
 (add-hook 'c-mode-hook 'electric-indent-mode)
-(add-hook 'c++-mode-hook 'electric-indent-mode)
 (add-hook 'c-mode-hook 'electric-quote-mode)
+(add-hook 'c++-mode-hook 'electric-pair-mode)
+(add-hook 'c++-mode-hook 'electric-indent-mode)
 (add-hook 'c++-mode-hook 'electric-quote-mode)
+
+;; rust
+(add-hook 'rust-mode-hook 'eglot-ensure)
+(add-hook 'rust-mode-hook 'compay-mode)
+(add-hook 'rust-mode-hook 'electric-pair-mode)
+(add-hook 'rust-mode-hook 'electric-indent-mode)
+(add-hook 'rust-mode-hook 'electric-quote-mode)
