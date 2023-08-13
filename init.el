@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(tsdh-light))
  '(global-display-line-numbers-mode t)
- '(package-selected-packages '(rust-mode company))
+ '(package-selected-packages '(racket-mode rust-mode company))
  '(scroll-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -25,14 +25,13 @@
 (setq-default tab-width 4)
 (defvaralias 'c-basic-offset 'tab-width)
 
-(require 'eldoc)
-(global-eldoc-mode)
-(global-set-key (kbd "C-c d") 'eldoc)
-
 ;; enable lsp
 (require 'eglot)
+(require 'eldoc)
 ;; set key for eglot-mode
+(define-key eglot-mode-map (kbd "C-c d") 'eldoc)
 (define-key eglot-mode-map (kbd "C-c f") 'eglot-format)
+
 
 (require 'electric)
 (defun add-electric-to-hook (hook)
@@ -45,6 +44,11 @@
 ;; emacs-lisp
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-electric-to-hook 'emacs-lisp-mode-hook)
+
+;; racket
+(add-hook 'racket-mode-hook 'eglot-ensure)
+(add-hook 'racket-mode-hook 'company-mode)
+(add-electric-to-hook 'racket-mode-hook)
 
 ;; c/c++
 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
