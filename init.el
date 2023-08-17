@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(tsdh-light))
  '(global-display-line-numbers-mode t)
- '(package-selected-packages '(racket-mode rust-mode company))
+ '(package-selected-packages '(magit racket-mode rust-mode company))
  '(scroll-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
