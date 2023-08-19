@@ -5,7 +5,8 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(tsdh-light))
  '(global-display-line-numbers-mode t)
- '(package-selected-packages '(magit racket-mode rust-mode company))
+ '(package-selected-packages
+   '(nerd-icons-dired nerd-icons-ibuffer nerd-icons-completion doom-modeline org-mode magit racket-mode rust-mode company))
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -54,6 +55,18 @@
   (if url-proxy-services
       (unset-proxy)
     (set-proxy)))
+
+(require 'doom-modeline)
+(doom-modeline-mode t)
+
+(require 'nerd-icons-dired)
+(add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
+
+(require 'nerd-icons-ibuffer)
+(add-hook 'ibuffer-mode-hook 'nerd-icons-ibuffer-mode)
+
+(require 'nerd-icons-completion)
+(nerd-icons-completion-mode)
 
 ;; enable lsp
 (require 'eglot)
