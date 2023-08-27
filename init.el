@@ -6,7 +6,7 @@
  '(custom-enabled-themes '(tsdh-light))
  '(global-display-line-numbers-mode t)
  '(package-selected-packages
-   '(nerd-icons-dired nerd-icons-ibuffer nerd-icons-completion doom-modeline org-mode magit racket-mode rust-mode company))
+   '(nyan-mode nerd-icons-dired nerd-icons-ibuffer nerd-icons-completion doom-modeline org-mode magit racket-mode rust-mode company))
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -56,6 +56,9 @@
       (unset-proxy)
     (set-proxy)))
 
+(require 'nyan-mode)
+(nyan-mode t)
+
 (require 'doom-modeline)
 (doom-modeline-mode t)
 
@@ -89,7 +92,7 @@
 
 ;; racket
 (add-hook 'racket-mode-hook 'eglot-ensure)
-(add-hook 'racket-mode-hook 'company-mode)
+;; (add-hook 'racket-mode-hook 'company-mode)
 (add-electric-to-hook 'racket-mode-hook)
 
 ;; c/c++
