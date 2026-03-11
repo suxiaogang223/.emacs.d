@@ -2,6 +2,8 @@
 
 Welcome to the official documentation for **Kanso Emacs**. This site provides in-depth guides on how the configuration is structured, how to install it, and how to maximize your productivity for various programming languages.
 
+![Kanso Emacs Screenshot](assets/kanso-screenshot.png)
+
 ## 🎯 The Vision
 
 This configuration is built for **speed, simplicity, and modern engineering**. 

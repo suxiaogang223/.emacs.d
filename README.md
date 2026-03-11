@@ -28,6 +28,12 @@ Comprehensive guides, setup instructions, and language-specific workflows are av
 
 ---
 
+## 📸 Overview
+
+![Kanso Emacs Screenshot](docs/assets/kanso-screenshot.png)
+
+---
+
 ## ✨ Design Philosophy
 
 1. **Native First**: Prioritize built-in Emacs features (`eglot`, `project.el`, `treesit`) over heavy third-party frameworks.
