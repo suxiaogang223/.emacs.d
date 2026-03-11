@@ -57,4 +57,6 @@ Useful commands:
 - C/C++ detects `Makefile` and common CMake build directories to set `compile-command`.
 - C/C++ passes `--compile-commands-dir` to `clangd` when `compile_commands.json` is found under the project or a common build directory.
 - For CMake projects without a build directory yet, `compile-command` defaults to configure with `CMAKE_EXPORT_COMPILE_COMMANDS=ON` and then build.
+- Rust sets a context-aware `compile-command`: tests use `cargo test --test`, examples use `cargo run --example`, benches use `cargo bench --bench`, and other files default to `cargo check`.
+- Rust adds shortcuts for `cargo check`, release build/run, clippy, and `cargo doc --no-deps`.
 - Racket adds shortcuts for docs, profile, and switching between source and REPL.
