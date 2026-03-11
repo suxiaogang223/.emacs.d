@@ -80,6 +80,14 @@ Use this on a new machine or after clearing `elpa/'."
                    (mapconcat #'symbol-name missing ", ")))
       (message "All selected packages are already installed."))))
 
+(defun my-install-missing-selected-packages-after-startup ()
+  "Install missing selected packages after startup settles."
+  (unless (or noninteractive (null (my-missing-selected-packages)))
+    (run-with-idle-timer
+     1 nil
+     (lambda ()
+       (my-install-missing-selected-packages 'noerror)))))
+
 ;; -- Setup use-package --
 ;; We use `use-package` for declarative configuration.
 (my-package-ensure-installed 'use-package t)
@@ -90,8 +98,8 @@ Use this on a new machine or after clearing `elpa/'."
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-;; Automatically try to install missing packages on startup without blocking.
-(my-install-missing-selected-packages 'noerror)
+;; Automatically try to install missing packages after startup settles.
+(add-hook 'emacs-startup-hook #'my-install-missing-selected-packages-after-startup)
 
 (provide 'init-package)
 

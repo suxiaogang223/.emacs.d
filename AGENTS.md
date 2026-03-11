@@ -39,3 +39,7 @@ For pull requests, include:
 ## Configuration Notes
 
 Keep `custom-set-variables` and `custom-set-faces` in `init.el`. Do not commit transient runtime output. If adding packages, make sure both `package-selected-packages` and the relevant module configuration stay in sync.
+
+## AI Assistant Interaction Rules
+
+- **Explicit Commit Confirmation**: NEVER automatically run `git commit` or `git push` unless explicitly instructed or confirmed by the user. Always leave changes in the working directory or staging area and wait for the user's review and approval before committing.

@@ -35,7 +35,10 @@
 (setq eldoc-echo-area-use-multiline-p nil)
 (setq python-shell-interpreter "python3")
 
-(require 'company)
+(defun my-enable-company-mode ()
+  "Enable `company-mode' when it is available."
+  (when (fboundp 'company-mode)
+    (company-mode 1)))
 
 (use-package flymake
   :ensure nil

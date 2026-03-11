@@ -106,7 +106,7 @@
   (setq dashboard-set-init-info t)
   
   ;; Footer
-  (setq dashboard-set-footer nil)
+  (setq dashboard-set-footer t)
   (setq dashboard-footer-messages '("Press ? to open documentation"))
   (setq dashboard-footer-icon "")
 

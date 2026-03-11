@@ -156,7 +156,7 @@
 (defun my-c/c++-setup ()
   "Set up development helpers for C and C++ buffers."
   (eglot-ensure)
-  (company-mode 1)
+  (my-enable-company-mode)
   (my-c/c++-set-compile-command))
 
 (add-to-list 'eglot-server-programs

@@ -2,7 +2,7 @@
 
 (defun my-racket-setup ()
   "Set up development helpers for Racket buffers."
-  (company-mode 1)
+  (my-enable-company-mode)
   (racket-xp-mode 1))
 
 (add-hook 'racket-mode-hook #'my-racket-setup)

@@ -11,6 +11,8 @@
 
 (require 'compile)
 (require 'project)
+(require 'rust-cargo nil t)
+(require 'rust-rustfmt nil t)
 
 ;; -- Language Server Protocol (LSP) --
 ;; Register `rust-analyzer` for both standard and Tree-sitter modes.
@@ -40,7 +42,7 @@
 (defun my-rust-format-buffer-on-save ()
   "Format the current Rust buffer before saving."
   (when (derived-mode-p 'rust-mode 'rust-ts-mode)
-    (rust-format-buffer)))
+    (my-rust-format-buffer)))
 
 (defun my-rust-project-root ()
   "Return the current Rust project root."
@@ -77,28 +79,84 @@
                         (shell-quote-argument root)
                         command))))
 
-(defun my-rust-doc ()
-  "Build crate documentation for the current Rust project."
-  (interactive)
+(defun my-rust-run-cargo (args)
+  "Run `cargo ARGS' from the current Rust project root."
   (let ((root (my-rust-project-root)))
     (unless root
       (user-error "No Cargo project found"))
     (compile
-     (format "cd %s && cargo doc --no-deps"
-             (shell-quote-argument root)))))
+     (format "cd %s && cargo %s"
+             (shell-quote-argument root)
+             args))))
+
+(defun my-rust-format-buffer ()
+  "Format the current Rust buffer."
+  (interactive)
+  (cond
+   ((fboundp 'rust-format-buffer)
+    (rust-format-buffer))
+   ((executable-find "rustfmt")
+    (let ((point-pos (point)))
+      (shell-command-on-region
+       (point-min) (point-max)
+       "rustfmt --emit stdout"
+       (current-buffer) t "*rustfmt*")
+      (goto-char (min point-pos (point-max)))))
+   (t
+    (user-error "Neither `rust-format-buffer' nor `rustfmt' is available"))))
+
+(defun my-rust-check ()
+  "Run `cargo check' for the current Rust project."
+  (interactive)
+  (my-rust-run-cargo "check"))
+
+(defun my-rust-compile ()
+  "Compile the current Rust target using `compile-command'."
+  (interactive)
+  (compile compile-command))
+
+(defun my-rust-compile-release ()
+  "Run `cargo build --release' for the current Rust project."
+  (interactive)
+  (my-rust-run-cargo "build --release"))
+
+(defun my-rust-run ()
+  "Run `cargo run' for the current Rust project."
+  (interactive)
+  (my-rust-run-cargo "run"))
+
+(defun my-rust-run-release ()
+  "Run `cargo run --release' for the current Rust project."
+  (interactive)
+  (my-rust-run-cargo "run --release"))
+
+(defun my-rust-test ()
+  "Run `cargo test' for the current Rust project."
+  (interactive)
+  (my-rust-run-cargo "test"))
+
+(defun my-rust-run-clippy ()
+  "Run `cargo clippy' for the current Rust project."
+  (interactive)
+  (my-rust-run-cargo "clippy"))
+
+(defun my-rust-doc ()
+  "Build crate documentation for the current Rust project."
+  (interactive)
+  (my-rust-run-cargo "doc --no-deps"))
 
 ;; -- Mode Setup Hook --
 (defun my-rust-setup ()
   "Set up development helpers for Rust buffers."
   (eglot-ensure)
-  (company-mode 1)
-  (my-rust-set-compile-command))
+  (my-enable-company-mode)
+  (my-rust-set-compile-command)
+  (add-hook 'before-save-hook #'my-rust-format-buffer-on-save nil t))
 
 ;; Enable Tree-sitter remapping if available.
 (my-enable-rust-ts-mode)
 
 ;; -- Hooks --
-(add-hook 'before-save-hook #'my-rust-format-buffer-on-save)
 (add-hook 'rust-mode-hook #'my-rust-setup)
 (when (fboundp 'rust-ts-mode)
   (add-hook 'rust-ts-mode-hook #'my-rust-setup))
@@ -109,14 +167,14 @@
 ;; -- Keybindings --
 (defun my-rust-bind-keys (map)
   "Bind Rust-specific keys in MAP."
-  (define-key map (kbd "C-c C-f") #'rust-format-buffer)
-  (define-key map (kbd "C-c C-k") #'rust-check)
-  (define-key map (kbd "C-c C-c") #'rust-compile)
-  (define-key map (kbd "C-c C-b") #'rust-compile-release)
-  (define-key map (kbd "C-c C-r") #'rust-run)
-  (define-key map (kbd "C-c C-e") #'rust-run-release)
-  (define-key map (kbd "C-c C-t") #'rust-test)
-  (define-key map (kbd "C-c C-l") #'rust-run-clippy)
+  (define-key map (kbd "C-c C-f") #'my-rust-format-buffer)
+  (define-key map (kbd "C-c C-k") #'my-rust-check)
+  (define-key map (kbd "C-c C-c") #'my-rust-compile)
+  (define-key map (kbd "C-c C-b") #'my-rust-compile-release)
+  (define-key map (kbd "C-c C-r") #'my-rust-run)
+  (define-key map (kbd "C-c C-e") #'my-rust-run-release)
+  (define-key map (kbd "C-c C-t") #'my-rust-test)
+  (define-key map (kbd "C-c C-l") #'my-rust-run-clippy)
   (define-key map (kbd "C-c C-d") #'my-rust-doc))
 
 (with-eval-after-load 'rust-mode

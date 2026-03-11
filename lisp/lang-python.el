@@ -48,6 +48,12 @@
   (when (derived-mode-p 'python-mode 'python-ts-mode)
     (my-python-format-buffer)))
 
+(defun my-python-setup ()
+  "Set up development helpers for Python buffers."
+  (eglot-ensure)
+  (my-enable-company-mode)
+  (add-hook 'before-save-hook #'my-python-format-buffer-on-save nil t))
+
 ;; -- Virtual Environments --
 (use-package pyvenv
   :ensure nil
@@ -62,11 +68,8 @@
 
 ;; -- Hooks & Setup --
 (my-enable-python-ts-mode)
-(add-hook 'before-save-hook #'my-python-format-buffer-on-save)
-(add-hook 'python-mode-hook #'eglot-ensure)
-(add-hook 'python-ts-mode-hook #'eglot-ensure)
-(add-hook 'python-mode-hook #'company-mode)
-(add-hook 'python-ts-mode-hook #'company-mode)
+(add-hook 'python-mode-hook #'my-python-setup)
+(add-hook 'python-ts-mode-hook #'my-python-setup)
 (add-electric-to-hook 'python-mode-hook)
 (add-electric-to-hook 'python-ts-mode-hook)
 
