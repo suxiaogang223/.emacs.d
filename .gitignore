@@ -6,3 +6,8 @@ eln-cache/
 transient/
 url/
 var/
+
+# Emacs backup and lock files
+*~
+\#*\#
+.\#*
