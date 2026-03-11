@@ -4,13 +4,13 @@ Minimal Emacs configuration with a small modular layout.
 
 ## Structure
 
-- [`init.el`](/Users/suxiaogang/.emacs.d/init.el): thin entrypoint that loads modules
-- [`lisp/init-package.el`](/Users/suxiaogang/.emacs.d/lisp/init-package.el): package bootstrap and missing-package recovery
-- [`lisp/init-completion.el`](/Users/suxiaogang/.emacs.d/lisp/init-completion.el): minibuffer completion UI
-- [`lisp/init-editing.el`](/Users/suxiaogang/.emacs.d/lisp/init-editing.el): shared editing behavior
-- [`lisp/init-tools.el`](/Users/suxiaogang/.emacs.d/lisp/init-tools.el): proxy, `company`, `eglot`, `eldoc`
-- [`lisp/init-ui.el`](/Users/suxiaogang/.emacs.d/lisp/init-ui.el): UI and theme behavior
-- [`lisp/lang-*.el`](/Users/suxiaogang/.emacs.d/lisp): language-specific configuration
+- `init.el`: thin entrypoint that loads modules
+- `lisp/init-package.el`: package bootstrap and missing-package recovery
+- `lisp/init-completion.el`: minibuffer completion UI
+- `lisp/init-editing.el`: shared editing behavior
+- `lisp/init-tools.el`: proxy, `company`, `eglot`, `eldoc`
+- `lisp/init-ui.el`: UI and theme behavior
+- `lisp/lang-*.el`: language-specific configuration
 
 ## Completion stack
 
