@@ -21,6 +21,7 @@ Comprehensive guides, setup instructions, and language-specific workflows are av
 
 ### 🔗 Quick Links
 - **[Getting Started & Installation](docs/setup.md)**
+- **[📝 Org & Markdown Writing](docs/lang-docs.md)**
 - **[🐍 Python Development](docs/lang-python.md)**
 - **[🦀 Rust Development](docs/lang-rust.md)**
 - **[❄️ C/C++ Development](docs/lang-cc.md)**
@@ -54,6 +55,7 @@ The configuration is strictly modular, keeping `init.el` clean and declarative.
 │   ├── init-package.el     # 📦 Package management & package bootstrap
 │   ├── init-completion.el  # 🔍 Vertico, Consult, Marginalia stack
 │   ├── init-editing.el     # ✍️ Global editing behaviors
+│   ├── init-docs.el        # 📝 Org and Markdown authoring support
 │   ├── init-tools.el       # 🛠️ Shared development helpers
 │   ├── init-ui.el          # 💄 Theming and visual decluttering
 │   └── lang-*.el           # 🌐 Language-specific environments

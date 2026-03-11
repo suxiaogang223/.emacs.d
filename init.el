@@ -17,8 +17,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(auto-dark company consult dashboard magit marginalia orderless pyvenv
-               racket-mode rust-mode use-package vertico))
+   '(auto-dark company consult dashboard magit marginalia markdown-mode
+               orderless org-modern pyvenv racket-mode rust-mode toc-org
+               use-package vertico))
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil))
 
@@ -41,6 +42,7 @@
 (require 'init-package)    ; Package manager setup (must be first)
 (require 'init-completion) ; Minibuffer completion UI
 (require 'init-editing)    ; Shared editing behavior
+(require 'init-docs)       ; Org and Markdown authoring experience
 (require 'init-tools)      ; Development tools (Eglot, Company, etc.)
 (require 'init-ui)         ; Visual styling and theme
 

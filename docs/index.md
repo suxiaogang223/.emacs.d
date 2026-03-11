@@ -13,6 +13,15 @@ Rather than relying on heavy, monolithic frameworks (like Spacemacs or Doom Emac
 - **Modern**: Heavily utilizes Emacs 29/30 built-in features like `eglot` (LSP) and `tree-sitter` (Syntax Highlighting).
 - **Aesthetic**: Minimal UI elements, maximizing screen real estate for your code.
 
+## 📚 Available Guides
+
+- [🛠️ Setup & Installation](setup.md)
+- [📝 Org & Markdown Writing](lang-docs.md)
+- [🐍 Python Development](lang-python.md)
+- [🦀 Rust Development](lang-rust.md)
+- [❄️ C/C++ Development](lang-cc.md)
+- [🎾 Racket Development](lang-racket.md)
+
 ---
 
 ## 🤝 Getting Help
