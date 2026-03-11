@@ -16,10 +16,10 @@ To get the full experience, you need a modern version of Emacs and a few system-
   brew install emacs-plus@30 --with-native-comp --with-xwidgets
   ```
 
-### 2. Global Search Tools
-The `Consult` package relies on fast system search tools:
-- **ripgrep** (`rg`): For blazing-fast text search.
-- **fd**: For fast file finding.
+### 2. Optional Search Tools
+The current default bindings work without extra search binaries. If you want fast CLI search tools available for future workflows, install:
+- **ripgrep** (`rg`)
+- **fd**
   ```bash
   # macOS
   brew install ripgrep fd
@@ -45,9 +45,10 @@ git clone https://github.com/suxiaogang223/kanso-emacs.git ~/.emacs.d
 ```
 
 ### Step 3: First Launch & Bootstrap
-Start Emacs. The `init-package.el` module will automatically:
-1. Connect to the Tsinghua (TUNA) mirrors.
-2. Download and install all required packages defined in `package-selected-packages`.
+Start Emacs. The configuration will:
+1. Initialize package archives from the Tsinghua (TUNA) mirrors.
+2. Install packages required immediately by startup.
+3. Schedule any remaining missing packages for installation after startup settles.
 
 **Troubleshooting Network Issues:**
 If the initial download fails due to a timeout, simply press `M-x` (Alt + x) and type:
@@ -55,6 +56,11 @@ If the initial download fails due to a timeout, simply press `M-x` (Alt + x) and
 M-x my-bootstrap-packages
 ```
 This will forcefully refresh the package archives and attempt the installation again.
+
+If you want to inspect package drift without changing anything, run:
+```text
+M-x my-missing-selected-packages
+```
 
 ---
 

@@ -39,7 +39,7 @@ Comprehensive guides, setup instructions, and language-specific workflows are av
 1. **Native First**: Prioritize built-in Emacs features (`eglot`, `project.el`, `treesit`) over heavy third-party frameworks.
 2. **Lightning Fast**: Lazy-loading and a modular architecture ensure sub-second startup times.
 3. **Discoverable**: Powered by a modern completion stack (`Vertico`, `Consult`, `Marginalia`, `Orderless`) to make finding files, commands, and code effortless.
-4. **Resilient**: Intelligent package bootstrapping ensures a smooth setup on any new machine, even with spotty network connections.
+4. **Resilient**: Package bootstrap is tolerant of missing packages and network hiccups, with a manual recovery path via `M-x my-bootstrap-packages`.
 
 ---
 
@@ -51,10 +51,10 @@ The configuration is strictly modular, keeping `init.el` clean and declarative.
 ~/.emacs.d/
 ├── init.el                 # 🏁 Core settings and module loader
 ├── lisp/                   # 🏗️ Configuration modules
-│   ├── init-package.el     # 📦 Package management & auto-bootstrap
+│   ├── init-package.el     # 📦 Package management & package bootstrap
 │   ├── init-completion.el  # 🔍 Vertico, Consult, Marginalia stack
 │   ├── init-editing.el     # ✍️ Global editing behaviors
-│   ├── init-tools.el       # 🛠️ Magit, Company, Eglot
+│   ├── init-tools.el       # 🛠️ Shared development helpers
 │   ├── init-ui.el          # 💄 Theming and visual decluttering
 │   └── lang-*.el           # 🌐 Language-specific environments
 └── docs/                   # 📖 Documentation source
@@ -77,7 +77,7 @@ git clone https://github.com/suxiaogang223/kanso-emacs.git ~/.emacs.d
 emacs
 ```
 
-*Emacs will automatically download and install required packages upon the first launch.*
+*On first launch, Emacs installs required packages during startup and shortly after startup settles. If a network error interrupts that process, run `M-x my-bootstrap-packages`.*
 
 ---
 

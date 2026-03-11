@@ -18,9 +18,11 @@ The Python configuration (`lisp/lang-python.el`) provides a robust, modern IDE e
 To enable all features, ensure the following CLI tools are available in your `PATH`:
 
 ```bash
-# Install Pyright for type-checking and Ruff for linting/formatting
+# One possible setup
 pip install pyright ruff
 ```
+
+The configuration talks to `pyright-langserver --stdio` through `eglot` and uses `ruff format` for formatting.
 
 ---
 

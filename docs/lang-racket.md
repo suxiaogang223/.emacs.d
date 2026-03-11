@@ -30,11 +30,14 @@ brew install --cask racket
 
 | Shortcut | Command | Action |
 | :--- | :--- | :--- |
-| `C-c C-c` | `racket-run` | Run the current file. |
-| `C-c C-r` | `racket-run-and-switch-to-repl`| Run the file and immediately focus the REPL. |
+| `C-c C-z` | `racket-repl` | Open or switch to the Racket REPL. |
+| `C-c C-r` | `racket-run` | Run the current file. |
 | `C-c C-t` | `racket-test` | Execute `rackunit` test submodules. |
-| `C-c C-d` | `racket-doc` | Open local Racket documentation for the symbol at point. |
-| `C-c C-y` | `racket-switch-to-repl` | Switch between the source buffer and the REPL buffer. |
+| `C-c C-d` | `racket-xp-documentation` | Open local Racket documentation for the symbol at point. |
+| `C-c C-s` | `racket-documentation-search` | Search the Racket documentation. |
+| `C-c C-p` | `racket-profile` | Profile the current program. |
+| `M-n` | `racket-xp-next-error` | Jump to the next analysis error. |
+| `M-p` | `racket-xp-previous-error` | Jump to the previous analysis error. |
 
 ### Advanced Symbol Exploration (`racket-xp-mode`)
 When you open a Racket file, `racket-xp-mode` is activated automatically.

@@ -9,7 +9,7 @@ The C/C++ configuration (`lisp/lang-cc.el`) is built to handle complex codebases
 - **Advanced LSP Intelligence**: Powered by `clangd` for highly accurate completions, cross-referencing, and refactoring.
 - **Smart Build System Detection**: Automatically locates `compile_commands.json` in common build directories (e.g., `build/`, `out/`).
 - **Zero-Config CMake Setup**: Automatically generates compilation databases for fresh CMake projects.
-- **Automated Formatting**: Integrates `clang-format` on save.
+- **Manual Formatting**: Binds `clang-format` to a dedicated shortcut.
 
 ---
 
@@ -35,10 +35,10 @@ When you open a C/C++ file, Emacs attempts to configure the `compile-command`:
 1. It searches for `Makefile`.
 2. It looks for CMake build directories (`build/`, `out/`).
 3. If it finds a root `CMakeLists.txt` but no build directory, it configures the compile command to:
-   `cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -B build && cmake --build build`
+   `cmake -S <root> -B <root>/build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && cmake --build <root>/build`
 
 ### Formatting
-- Files are automatically formatted via `clang-format` every time you save.
+- Run `C-c C-f` to format the current buffer with `clang-format`.
 - Ensure you have a `.clang-format` file in your project root to dictate the style rules.
 
 ---

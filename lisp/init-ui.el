@@ -42,22 +42,24 @@
   (interactive)
   (browse-url "https://github.com/suxiaogang223"))
 
-(defun my-kanso-dashboard-bind-docs-key ()
-  "Bind `?' to the online docs in dashboard-related keymaps."
-  (define-key dashboard-mode-map (kbd "?") #'my-kanso-open-docs)
-  ;; Dashboard entries use widget/button maps that override the major mode map
-  ;; when point is on a clickable item.
-  (when (boundp 'widget-keymap)
-    (define-key widget-keymap (kbd "?") #'my-kanso-open-docs))
-  (when (boundp 'button-buffer-map)
-    (define-key button-buffer-map (kbd "?") #'my-kanso-open-docs)))
+(defconst my-kanso-dashboard-footer-messages
+  '("Simple tools. Clear mind."
+    "Open less. Build more."
+    "Small config. Sharp workflow."
+    "Quiet screen. Serious work."
+    "Readable code, repeatable habits."
+    "Stay focused. Ship clean.")
+  "Footer messages displayed on the dashboard.")
+
+(defun my-kanso-dashboard-setup ()
+  "Apply Kanso-specific dashboard buffer behavior."
+  (display-line-numbers-mode -1))
 
 (use-package dashboard
   :ensure t
   :init
   (setq initial-buffer-choice 'dashboard-open)
   :config
-  (my-kanso-dashboard-bind-docs-key)
   ;; Basic Configuration
   (setq dashboard-startup-banner (expand-file-name "img/kanso-icon.svg" user-emacs-directory))
   (setq dashboard-center-content t)
@@ -104,20 +106,15 @@
   (setq dashboard-set-heading-icons nil)
   (setq dashboard-set-file-icons nil)
   (setq dashboard-set-init-info t)
-  
-  ;; Footer
   (setq dashboard-set-footer t)
-  (setq dashboard-footer-messages '("Press ? to open documentation"))
+  (setq dashboard-footer-messages my-kanso-dashboard-footer-messages)
   (setq dashboard-footer-icon "")
 
   ;; Initialize Dashboard AFTER setting variables
   (dashboard-setup-startup-hook)
 
-  ;; Hooks for aesthetics and keybindings
-  (add-hook 'dashboard-mode-hook
-            (lambda ()
-              (display-line-numbers-mode -1)
-              (my-kanso-dashboard-bind-docs-key))))
+  ;; Hooks for aesthetics
+  (add-hook 'dashboard-mode-hook #'my-kanso-dashboard-setup))
 
 (provide 'init-ui)
 

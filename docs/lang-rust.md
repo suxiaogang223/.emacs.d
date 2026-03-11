@@ -37,14 +37,15 @@ Press `M-x compile` (or your custom compile binding). The command dynamically ad
 
 | Shortcut | Command | Action |
 | :--- | :--- | :--- |
-| `C-c C-f` | `rust-format-buffer` | Format the current file (`rustfmt`). *Also runs automatically on save.* |
-| `C-c C-k` | `rust-check` | Run `cargo check` across the workspace. |
-| `C-c C-c` | `rust-compile` | Standard compile / build command. |
-| `C-c C-b` | `rust-compile-release`| Build project with `--release` flag. |
-| `C-c C-r` | `rust-run` | Run the project (`cargo run`). |
-| `C-c C-t` | `rust-test` | Run the test suite (`cargo test`). |
-| `C-c C-l` | `rust-run-clippy` | Run the linter (`cargo clippy`). |
-| `C-c C-d` | `my-rust-doc` | Generate and open offline crate documentation. |
+| `C-c C-f` | `my-rust-format-buffer` | Format the current file with `rustfmt`. Also runs automatically on save. |
+| `C-c C-k` | `my-rust-check` | Run `cargo check` across the workspace. |
+| `C-c C-c` | `my-rust-compile` | Run the current buffer's `compile-command`. |
+| `C-c C-b` | `my-rust-compile-release`| Build the project with `cargo build --release`. |
+| `C-c C-r` | `my-rust-run` | Run the project with `cargo run`. |
+| `C-c C-e` | `my-rust-run-release` | Run the project with `cargo run --release`. |
+| `C-c C-t` | `my-rust-test` | Run the test suite with `cargo test`. |
+| `C-c C-l` | `my-rust-run-clippy` | Run the linter with `cargo clippy`. |
+| `C-c C-d` | `my-rust-doc` | Build crate documentation with `cargo doc --no-deps`. |
 
 ---
 
