@@ -50,3 +50,7 @@ Useful commands:
 
 - Python tree-sitter grammar can be installed with `M-x my-install-python-treesit-grammar`.
 - Python virtual environments can be activated with `M-x pyvenv-activate`.
+- C/C++ tree-sitter grammars can be installed with `M-x my-install-c/c++-treesit-grammars`.
+- Rust tree-sitter grammar can be installed with `M-x my-install-rust-treesit-grammar`.
+- C/C++ uses `clangd` and `clang-format`; Rust uses `rust-analyzer`, `cargo`, and `rustfmt`.
+- Racket uses `racket-mode` with `racket-xp-mode`, `racket-run`, `racket-test`, and `racket-repl`.
