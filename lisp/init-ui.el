@@ -44,9 +44,9 @@
 
 (use-package dashboard
   :ensure t
-  :config
-  (dashboard-setup-startup-hook)
-  
+  :bind (:map dashboard-mode-map
+              ("?" . my-kanso-open-docs))
+  :init
   ;; Basic Configuration
   (setq dashboard-startup-banner (expand-file-name "img/kanso-icon.svg" user-emacs-directory))
   (setq dashboard-center-content t)
@@ -99,9 +99,8 @@
   (setq dashboard-footer-messages '("Press ? to open documentation"))
   (setq dashboard-footer-icon "")
   
-  ;; Bind '?' to open docs
-  (with-eval-after-load 'dashboard
-    (define-key dashboard-mode-map (kbd "?") #'my-kanso-open-docs))
+  :config
+  (dashboard-setup-startup-hook)
   
   ;; Hooks for aesthetics
   (add-hook 'dashboard-after-initialize-hook
