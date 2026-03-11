@@ -19,7 +19,7 @@
 (add-to-list 'eglot-server-programs '((rust-mode rust-ts-mode) "rust-analyzer"))
 
 ;; -- Tree-sitter Support --
-(defun my-enable-rust-ts-mode ()
+(defun enable-rust-ts-mode ()
   "Prefer `rust-ts-mode' when the tree-sitter Rust grammar is available."
   (when (and (fboundp 'treesit-available-p)
              (treesit-available-p)
@@ -27,7 +27,7 @@
              (treesit-language-available-p 'rust))
     (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))))
 
-(defun my-install-rust-treesit-grammar ()
+(defun install-rust-treesit-grammar ()
   "Install the Rust tree-sitter grammar."
   (interactive)
   (unless (and (fboundp 'treesit-available-p) (treesit-available-p))
@@ -35,28 +35,28 @@
   (add-to-list 'treesit-language-source-alist
                '(rust "https://github.com/tree-sitter/tree-sitter-rust"))
   (treesit-install-language-grammar 'rust)
-  (my-enable-rust-ts-mode)
+  (enable-rust-ts-mode)
   (message "Installed Rust tree-sitter grammar"))
 
 ;; -- Helper Functions --
-(defun my-rust-format-buffer-on-save ()
+(defun rust-format-buffer-on-save ()
   "Format the current Rust buffer before saving."
   (when (derived-mode-p 'rust-mode 'rust-ts-mode)
-    (my-rust-format-buffer)))
+    (format-rust-buffer)))
 
-(defun my-rust-project-root ()
+(defun rust-project-root ()
   "Return the current Rust project root."
   (or (locate-dominating-file default-directory "Cargo.toml")
       (when-let ((project (project-current nil)))
         (project-root project))))
 
-(defun my-rust-target-command ()
+(defun rust-target-command ()
   "Return a context-aware cargo command for the current buffer.
 - In `tests/`: `cargo test --test <name>`
 - In `examples/`: `cargo run --example <name>`
 - In `benches/`: `cargo bench --bench <name>`
 - Otherwise: `cargo check`"
-  (let* ((root (my-rust-project-root))
+  (let* ((root (rust-project-root))
          (relative (and root buffer-file-name
                         (file-relative-name buffer-file-name root)))
          (target (and relative (file-name-base relative))))
@@ -70,18 +70,18 @@
       (format "cargo bench --bench %s" (shell-quote-argument target)))
      (t "cargo check"))))
 
-(defun my-rust-set-compile-command ()
+(defun rust-set-compile-command ()
   "Set a project-aware `compile-command' for Rust."
-  (when-let ((root (my-rust-project-root))
-             (command (my-rust-target-command)))
+  (when-let ((root (rust-project-root))
+             (command (rust-target-command)))
     (setq-local compile-command
                 (format "cd %s && %s"
                         (shell-quote-argument root)
                         command))))
 
-(defun my-rust-run-cargo (args)
+(defun rust-run-cargo (args)
   "Run `cargo ARGS' from the current Rust project root."
-  (let ((root (my-rust-project-root)))
+  (let ((root (rust-project-root)))
     (unless root
       (user-error "No Cargo project found"))
     (compile
@@ -89,7 +89,7 @@
              (shell-quote-argument root)
              args))))
 
-(defun my-rust-format-buffer ()
+(defun format-rust-buffer ()
   "Format the current Rust buffer."
   (interactive)
   (cond
@@ -105,83 +105,83 @@
    (t
     (user-error "Neither `rust-format-buffer' nor `rustfmt' is available"))))
 
-(defun my-rust-check ()
+(defun rust-check-project ()
   "Run `cargo check' for the current Rust project."
   (interactive)
-  (my-rust-run-cargo "check"))
+  (rust-run-cargo "check"))
 
-(defun my-rust-compile ()
+(defun rust-compile-project ()
   "Compile the current Rust target using `compile-command'."
   (interactive)
   (compile compile-command))
 
-(defun my-rust-compile-release ()
+(defun rust-build-release ()
   "Run `cargo build --release' for the current Rust project."
   (interactive)
-  (my-rust-run-cargo "build --release"))
+  (rust-run-cargo "build --release"))
 
-(defun my-rust-run ()
+(defun rust-run-project ()
   "Run `cargo run' for the current Rust project."
   (interactive)
-  (my-rust-run-cargo "run"))
+  (rust-run-cargo "run"))
 
-(defun my-rust-run-release ()
+(defun rust-run-project-release ()
   "Run `cargo run --release' for the current Rust project."
   (interactive)
-  (my-rust-run-cargo "run --release"))
+  (rust-run-cargo "run --release"))
 
-(defun my-rust-test ()
+(defun rust-test-project ()
   "Run `cargo test' for the current Rust project."
   (interactive)
-  (my-rust-run-cargo "test"))
+  (rust-run-cargo "test"))
 
-(defun my-rust-run-clippy ()
+(defun rust-run-clippy ()
   "Run `cargo clippy' for the current Rust project."
   (interactive)
-  (my-rust-run-cargo "clippy"))
+  (rust-run-cargo "clippy"))
 
-(defun my-rust-doc ()
+(defun rust-build-doc ()
   "Build crate documentation for the current Rust project."
   (interactive)
-  (my-rust-run-cargo "doc --no-deps"))
+  (rust-run-cargo "doc --no-deps"))
 
 ;; -- Mode Setup Hook --
-(defun my-rust-setup ()
+(defun rust-setup ()
   "Set up development helpers for Rust buffers."
   (eglot-ensure)
-  (my-enable-company-mode)
-  (my-rust-set-compile-command)
-  (add-hook 'before-save-hook #'my-rust-format-buffer-on-save nil t))
+  (enable-company-mode-if-available)
+  (rust-set-compile-command)
+  (add-hook 'before-save-hook #'rust-format-buffer-on-save nil t))
 
 ;; Enable Tree-sitter remapping if available.
-(my-enable-rust-ts-mode)
+(enable-rust-ts-mode)
 
 ;; -- Hooks --
-(add-hook 'rust-mode-hook #'my-rust-setup)
+(add-hook 'rust-mode-hook #'rust-setup)
 (when (fboundp 'rust-ts-mode)
-  (add-hook 'rust-ts-mode-hook #'my-rust-setup))
+  (add-hook 'rust-ts-mode-hook #'rust-setup))
 (add-electric-to-hook 'rust-mode-hook)
 (when (fboundp 'rust-ts-mode)
   (add-electric-to-hook 'rust-ts-mode-hook))
 
 ;; -- Keybindings --
-(defun my-rust-bind-keys (map)
+(defun rust-bind-keys (map)
   "Bind Rust-specific keys in MAP."
-  (define-key map (kbd "C-c C-f") #'my-rust-format-buffer)
-  (define-key map (kbd "C-c C-k") #'my-rust-check)
-  (define-key map (kbd "C-c C-c") #'my-rust-compile)
-  (define-key map (kbd "C-c C-b") #'my-rust-compile-release)
-  (define-key map (kbd "C-c C-r") #'my-rust-run)
-  (define-key map (kbd "C-c C-e") #'my-rust-run-release)
-  (define-key map (kbd "C-c C-t") #'my-rust-test)
-  (define-key map (kbd "C-c C-l") #'my-rust-run-clippy)
-  (define-key map (kbd "C-c C-d") #'my-rust-doc))
+  (define-key map (kbd "C-c C-f") #'format-rust-buffer)
+  (define-key map (kbd "C-c C-k") #'rust-check-project)
+  (define-key map (kbd "C-c C-c") #'rust-compile-project)
+  (define-key map (kbd "C-c C-b") #'rust-build-release)
+  (define-key map (kbd "C-c C-r") #'rust-run-project)
+  (define-key map (kbd "C-c C-e") #'rust-run-project-release)
+  (define-key map (kbd "C-c C-t") #'rust-test-project)
+  (define-key map (kbd "C-c C-l") #'rust-run-clippy)
+  (define-key map (kbd "C-c C-d") #'rust-build-doc))
 
 (with-eval-after-load 'rust-mode
-  (my-rust-bind-keys rust-mode-map))
+  (rust-bind-keys rust-mode-map))
 
 (with-eval-after-load 'rust-ts-mode
-  (my-rust-bind-keys rust-ts-mode-map))
+  (rust-bind-keys rust-ts-mode-map))
 
 (provide 'lang-rust)
 

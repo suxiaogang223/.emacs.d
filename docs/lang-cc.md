@@ -46,4 +46,4 @@ When you open a C/C++ file, Emacs attempts to configure the `compile-command`:
 ## ⚙️ Under the Hood
 
 - **`eglot` and `clangd`**: We pass `--compile-commands-dir` to `clangd` dynamically when a build directory is found, ensuring the language server fully understands your project's include paths and macros.
-- **Tree-sitter**: Run `M-x my-install-c/c++-treesit-grammars` to install grammars for both C and C++ for pixel-perfect syntax highlighting.
+- **Tree-sitter**: Run `M-x install-c/c++-treesit-grammars` to install grammars for both C and C++ for pixel-perfect syntax highlighting.

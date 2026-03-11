@@ -53,13 +53,13 @@ Start Emacs. The configuration will:
 **Troubleshooting Network Issues:**
 If the initial download fails due to a timeout, simply press `M-x` (Alt + x) and type:
 ```text
-M-x my-bootstrap-packages
+M-x bootstrap-packages
 ```
 This will forcefully refresh the package archives and attempt the installation again.
 
 If you want to inspect package drift without changing anything, run:
 ```text
-M-x my-missing-selected-packages
+M-x missing-selected-packages
 ```
 
 ---
@@ -69,8 +69,8 @@ M-x my-missing-selected-packages
 Tree-sitter provides superior, AST-based syntax highlighting. You need to install the grammars for your specific languages. 
 
 Run the following commands interactively in Emacs:
-- `M-x my-install-python-treesit-grammar`
-- `M-x my-install-rust-treesit-grammar`
-- `M-x my-install-c/c++-treesit-grammars`
+- `M-x install-python-treesit-grammar`
+- `M-x install-rust-treesit-grammar`
+- `M-x install-c/c++-treesit-grammars`
 
 *Note: You will need a C compiler (like `gcc` or `clang`) on your system to compile these grammars.*

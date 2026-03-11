@@ -1,6 +1,6 @@
 ;;; init-ui.el --- UI configuration -*- lexical-binding: t; -*-
 
-(defun my-enable-auto-dark ()
+(defun enable-auto-dark ()
   "Enable `auto-dark-mode' after the first GUI frame is ready."
   (when (display-graphic-p)
     (condition-case err
@@ -24,25 +24,25 @@
     ;; Prefer `osascript' and defer startup to avoid early AppleScript failures.
     (setq auto-dark-allow-osascript t
           auto-dark-detection-method 'osascript))
-  :hook (window-setup . my-enable-auto-dark))
+  :hook (window-setup . enable-auto-dark))
 
 ;; -- Dashboard (Startup Screen) --
-(defun my-kanso-open-docs ()
+(defun kanso-open-docs ()
   "Open the Kanso Emacs documentation."
   (interactive)
   (browse-url "https://suxiaogang223.github.io/kanso-emacs/"))
 
-(defun my-kanso-open-repo ()
+(defun kanso-open-repo ()
   "Open the Kanso Emacs GitHub repository."
   (interactive)
   (browse-url "https://github.com/suxiaogang223/kanso-emacs"))
 
-(defun my-kanso-open-author ()
+(defun kanso-open-author ()
   "Open the author's GitHub profile."
   (interactive)
   (browse-url "https://github.com/suxiaogang223"))
 
-(defconst my-kanso-dashboard-footer-messages
+(defconst kanso-dashboard-footer-messages
   '("Simple tools. Clear mind."
     "Open less. Build more."
     "Small config. Sharp workflow."
@@ -51,7 +51,7 @@
     "Stay focused. Ship clean.")
   "Footer messages displayed on the dashboard.")
 
-(defun my-kanso-dashboard-setup ()
+(defun kanso-dashboard-setup ()
   "Apply Kanso-specific dashboard buffer behavior."
   (display-line-numbers-mode -1))
 
@@ -75,15 +75,15 @@
           ((,""
             "📖 Docs"
             "Open Documentation"
-            (lambda (&rest _) (my-kanso-open-docs)))
+            (lambda (&rest _) (kanso-open-docs)))
            (,""
             "⭐ Repo"
             "View Source Code"
-            (lambda (&rest _) (my-kanso-open-repo)))
+            (lambda (&rest _) (kanso-open-repo)))
            (,""
             "👤 Author"
             "Visit @suxiaogang223"
-            (lambda (&rest _) (my-kanso-open-author))))))
+            (lambda (&rest _) (kanso-open-author))))))
   
   ;; Customize widgets
   (setq dashboard-items '((recents   . 5)
@@ -107,14 +107,14 @@
   (setq dashboard-set-file-icons nil)
   (setq dashboard-set-init-info t)
   (setq dashboard-set-footer t)
-  (setq dashboard-footer-messages my-kanso-dashboard-footer-messages)
+  (setq dashboard-footer-messages kanso-dashboard-footer-messages)
   (setq dashboard-footer-icon "")
 
   ;; Initialize Dashboard AFTER setting variables
   (dashboard-setup-startup-hook)
 
   ;; Hooks for aesthetics
-  (add-hook 'dashboard-mode-hook #'my-kanso-dashboard-setup))
+  (add-hook 'dashboard-mode-hook #'kanso-dashboard-setup))
 
 (provide 'init-ui)
 

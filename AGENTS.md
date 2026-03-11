@@ -8,14 +8,14 @@ This repository is an Emacs configuration, not an application library. `init.el`
 
 - `emacs --batch -Q -l init.el`: smoke-test that the config loads without startup errors.
 - `emacs --batch -Q --eval "(progn (load-file \"init.el\") ...)"`: verify a specific command, keybinding, or module in batch mode.
-- `M-x my-bootstrap-packages`: install missing packages on a new machine.
-- `M-x my-missing-selected-packages`: inspect package drift without changing state.
+- `M-x bootstrap-packages`: install missing packages on a new machine.
+- `M-x missing-selected-packages`: inspect package drift without changing state.
 
 When changing language modules, prefer targeted batch checks over manual guesswork.
 
 ## Coding Style & Naming Conventions
 
-Use Emacs Lisp with `lexical-binding: t`. Indent with spaces using standard Emacs Lisp style; do not introduce tabs. Keep modules small and responsibility-focused. Use `init-` prefixes for shared modules and `lang-` prefixes for language modules. Helper functions in this repo generally use the `my-...` prefix, for example `my-rust-doc` or `my-c/c++-configure-cmake`.
+Use Emacs Lisp with `lexical-binding: t`. Indent with spaces using standard Emacs Lisp style; do not introduce tabs. Keep modules small and responsibility-focused. Use `init-` prefixes for shared modules and `lang-` prefixes for language modules. Prefer descriptive helper names; add a module- or domain-specific prefix only when it avoids ambiguity.
 
 ## Testing Guidelines
 

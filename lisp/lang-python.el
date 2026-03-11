@@ -10,7 +10,7 @@
 ;;; Code:
 
 ;; -- Tree-sitter Support --
-(defun my-enable-python-ts-mode ()
+(defun enable-python-ts-mode ()
   "Prefer `python-ts-mode' when tree-sitter Python grammar is available."
   (when (and (fboundp 'treesit-available-p)
              (treesit-available-p)
@@ -18,7 +18,7 @@
              (treesit-language-available-p 'python))
     (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))))
 
-(defun my-install-python-treesit-grammar ()
+(defun install-python-treesit-grammar ()
   "Install the Python tree-sitter grammar and enable `python-ts-mode'."
   (interactive)
   (unless (and (fboundp 'treesit-available-p) (treesit-available-p))
@@ -26,11 +26,11 @@
   (add-to-list 'treesit-language-source-alist
                '(python "https://github.com/tree-sitter/tree-sitter-python"))
   (treesit-install-language-grammar 'python)
-  (my-enable-python-ts-mode)
+  (enable-python-ts-mode)
   (message "Installed Python tree-sitter grammar; Python files will use python-ts-mode"))
 
 ;; -- Formatting --
-(defun my-python-format-buffer ()
+(defun ruff-format-buffer ()
   "Format the current Python buffer with Ruff."
   (when (derived-mode-p 'python-mode 'python-ts-mode)
     (unless (executable-find "ruff")
@@ -43,16 +43,16 @@
        (current-buffer) t "*ruff-format*")
       (goto-char (min point-pos (point-max))))))
 
-(defun my-python-format-buffer-on-save ()
+(defun python-format-buffer-on-save ()
   "Format Python buffers with Ruff before saving."
   (when (derived-mode-p 'python-mode 'python-ts-mode)
-    (my-python-format-buffer)))
+    (ruff-format-buffer)))
 
-(defun my-python-setup ()
+(defun python-setup ()
   "Set up development helpers for Python buffers."
   (eglot-ensure)
-  (my-enable-company-mode)
-  (add-hook 'before-save-hook #'my-python-format-buffer-on-save nil t))
+  (enable-company-mode-if-available)
+  (add-hook 'before-save-hook #'python-format-buffer-on-save nil t))
 
 ;; -- Virtual Environments --
 (use-package pyvenv
@@ -67,9 +67,9 @@
                "pyright-langserver" "--stdio"))
 
 ;; -- Hooks & Setup --
-(my-enable-python-ts-mode)
-(add-hook 'python-mode-hook #'my-python-setup)
-(add-hook 'python-ts-mode-hook #'my-python-setup)
+(enable-python-ts-mode)
+(add-hook 'python-mode-hook #'python-setup)
+(add-hook 'python-ts-mode-hook #'python-setup)
 (add-electric-to-hook 'python-mode-hook)
 (add-electric-to-hook 'python-ts-mode-hook)
 

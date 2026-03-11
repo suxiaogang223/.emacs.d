@@ -18,6 +18,6 @@ Rather than relying on heavy, monolithic frameworks (like Spacemacs or Doom Emac
 ## 🤝 Getting Help
 
 If you encounter any issues:
-1. Run `M-x my-bootstrap-packages` to ensure all packages are correctly installed.
+1. Run `M-x bootstrap-packages` to ensure all packages are correctly installed.
 2. Check the `*Messages*` buffer for any warnings or errors.
 3. Verify that your language servers (LSP) are installed and accessible in your system's `PATH`.

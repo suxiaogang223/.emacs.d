@@ -35,7 +35,7 @@ Before starting work on a project, activate its virtual environment:
 
 ### 2. Coding & Formatting
 - **Auto-format**: Simply save the file (`C-x C-s`). Ruff will format the code instantaneously.
-- **Manual format**: If you need to trigger it manually, run `M-x my-python-format-buffer`.
+- **Manual format**: If you need to trigger it manually, run `M-x ruff-format-buffer`.
 
 ### 3. Interactive REPL
 Send code to an interactive Python shell for quick testing:

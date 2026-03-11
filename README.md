@@ -39,7 +39,7 @@ Comprehensive guides, setup instructions, and language-specific workflows are av
 1. **Native First**: Prioritize built-in Emacs features (`eglot`, `project.el`, `treesit`) over heavy third-party frameworks.
 2. **Lightning Fast**: Lazy-loading and a modular architecture ensure sub-second startup times.
 3. **Discoverable**: Powered by a modern completion stack (`Vertico`, `Consult`, `Marginalia`, `Orderless`) to make finding files, commands, and code effortless.
-4. **Resilient**: Package bootstrap is tolerant of missing packages and network hiccups, with a manual recovery path via `M-x my-bootstrap-packages`.
+4. **Resilient**: Package bootstrap is tolerant of missing packages and network hiccups, with a manual recovery path via `M-x bootstrap-packages`.
 
 ---
 
@@ -77,7 +77,7 @@ git clone https://github.com/suxiaogang223/kanso-emacs.git ~/.emacs.d
 emacs
 ```
 
-*On first launch, Emacs installs required packages during startup and shortly after startup settles. If a network error interrupts that process, run `M-x my-bootstrap-packages`.*
+*On first launch, Emacs installs required packages during startup and shortly after startup settles. If a network error interrupts that process, run `M-x bootstrap-packages`.*
 
 ---
 
