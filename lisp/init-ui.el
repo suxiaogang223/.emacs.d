@@ -42,11 +42,22 @@
   (interactive)
   (browse-url "https://github.com/suxiaogang223"))
 
+(defun my-kanso-dashboard-bind-docs-key ()
+  "Bind `?' to the online docs in dashboard-related keymaps."
+  (define-key dashboard-mode-map (kbd "?") #'my-kanso-open-docs)
+  ;; Dashboard entries use widget/button maps that override the major mode map
+  ;; when point is on a clickable item.
+  (when (boundp 'widget-keymap)
+    (define-key widget-keymap (kbd "?") #'my-kanso-open-docs))
+  (when (boundp 'button-buffer-map)
+    (define-key button-buffer-map (kbd "?") #'my-kanso-open-docs)))
+
 (use-package dashboard
   :ensure t
-  :bind (:map dashboard-mode-map
-              ("?" . my-kanso-open-docs))
   :init
+  (setq initial-buffer-choice 'dashboard-open)
+  :config
+  (my-kanso-dashboard-bind-docs-key)
   ;; Basic Configuration
   (setq dashboard-startup-banner (expand-file-name "img/kanso-icon.svg" user-emacs-directory))
   (setq dashboard-center-content t)
@@ -98,14 +109,15 @@
   (setq dashboard-set-footer nil)
   (setq dashboard-footer-messages '("Press ? to open documentation"))
   (setq dashboard-footer-icon "")
-  
-  :config
+
+  ;; Initialize Dashboard AFTER setting variables
   (dashboard-setup-startup-hook)
-  
-  ;; Hooks for aesthetics
-  (add-hook 'dashboard-after-initialize-hook
+
+  ;; Hooks for aesthetics and keybindings
+  (add-hook 'dashboard-mode-hook
             (lambda ()
-              (display-line-numbers-mode -1))))
+              (display-line-numbers-mode -1)
+              (my-kanso-dashboard-bind-docs-key))))
 
 (provide 'init-ui)
 
