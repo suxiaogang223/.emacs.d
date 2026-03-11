@@ -27,6 +27,21 @@
   :hook (window-setup . my-enable-auto-dark))
 
 ;; -- Dashboard (Startup Screen) --
+(defun my-kanso-open-docs ()
+  "Open the Kanso Emacs documentation."
+  (interactive)
+  (browse-url "https://suxiaogang223.github.io/kanso-emacs/"))
+
+(defun my-kanso-open-repo ()
+  "Open the Kanso Emacs GitHub repository."
+  (interactive)
+  (browse-url "https://github.com/suxiaogang223/kanso-emacs"))
+
+(defun my-kanso-open-author ()
+  "Open the author's GitHub profile."
+  (interactive)
+  (browse-url "https://github.com/suxiaogang223"))
+
 (use-package dashboard
   :ensure t
   :config
@@ -40,25 +55,55 @@
   ;; Banner text
   (setq dashboard-banner-logo-title "K A N S O    E M A C S")
   
+  ;; Navigator buttons
+  (setq dashboard-set-navigator t)
+  (setq dashboard-navigator-buttons
+        `(;; line1
+          ((,""
+            "📖 Docs"
+            "Open Documentation"
+            (lambda (&rest _) (my-kanso-open-docs)))
+           (,""
+            "⭐ Repo"
+            "View Source Code"
+            (lambda (&rest _) (my-kanso-open-repo)))
+           (,""
+            "👤 Author"
+            "Visit @suxiaogang223"
+            (lambda (&rest _) (my-kanso-open-author))))))
+  
   ;; Customize widgets
-  (setq dashboard-items '((recents  . 5)
-                          (projects . 5)))
+  (setq dashboard-items '((recents   . 5)
+                          (projects  . 5)))
+  
+  ;; Explicitly tell Dashboard to render the navigator buttons
+  (setq dashboard-startupify-list '(dashboard-insert-banner
+                                    dashboard-insert-newline
+                                    dashboard-insert-banner-title
+                                    dashboard-insert-newline
+                                    dashboard-insert-navigator
+                                    dashboard-insert-newline
+                                    dashboard-insert-init-info
+                                    dashboard-insert-items
+                                    dashboard-insert-newline
+                                    dashboard-insert-footer))
   
   ;; Appearance
-  ;; Keep Kanso minimal: disable heavy third-party icons (all-the-icons/nerd-icons)
+  ;; Keep Kanso minimal: disable heavy third-party icons
   (setq dashboard-set-heading-icons nil)
   (setq dashboard-set-file-icons nil)
   (setq dashboard-set-init-info t)
   
-  ;; Footer (Documentation Link)
+  ;; Footer
   (setq dashboard-set-footer nil)
-  (setq dashboard-footer-messages '("Press ? for help | Docs: suxiaogang223.github.io/kanso-emacs"))
+  (setq dashboard-footer-messages '("Press ? to open documentation"))
   (setq dashboard-footer-icon "")
   
+  ;; Bind '?' to open docs
+  (with-eval-after-load 'dashboard
+    (define-key dashboard-mode-map (kbd "?") #'my-kanso-open-docs))
+  
   ;; Hooks for aesthetics
-  ;; We use `dashboard-after-initialize-hook` instead of `dashboard-mode-hook`
-  ;; because global modes (like `global-display-line-numbers-mode`) load late
-  ;; and can override mode hooks.
   (add-hook 'dashboard-after-initialize-hook
             (lambda ()
               (display-line-numbers-mode -1))))
