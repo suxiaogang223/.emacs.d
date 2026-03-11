@@ -1,0 +1,8 @@
+# Emacs temporary/runtime directories
+auto-save-list/
+eshell/
+elpa/
+eln-cache/
+transient/
+url/
+var/
