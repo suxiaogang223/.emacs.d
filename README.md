@@ -1,13 +1,15 @@
-# 🚀 Minimalist Emacs Configuration
-
 <div align="center">
 
+<img src="docs/assets/kanso-logo.svg" alt="Kanso Emacs Logo" width="500"/>
+
+# 🌿 Kanso Emacs
+
 [![Emacs Version](https://img.shields.io/badge/Emacs-30.0+-blueviolet.svg?style=for-the-badge&logo=gnu-emacs&logoColor=white)](https://www.gnu.org/software/emacs/)
-[![Documentation](https://img.shields.io/badge/Docs-GitHub%20Pages-blue.svg?style=for-the-badge&logo=github)](https://<your-username>.github.io/emacs-d/)
+[![Documentation](https://img.shields.io/badge/Docs-GitHub%20Pages-blue.svg?style=for-the-badge&logo=github)](https://suxiaogang223.github.io/kanso-emacs/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
 *A high-performance, modular, and modern Emacs configuration tailored for software engineering.*<br>
-*Built to leverage native features like `eglot` and `tree-sitter` for a full IDE experience without the bloat.*
+*Kanso (簡素) means simplicity; eliminating clutter to reveal the essential.*
 
 </div>
 
@@ -15,7 +17,7 @@
 
 ## 📖 Documentation
 
-Comprehensive guides, setup instructions, and language-specific workflows are available on our **[Documentation Site](https://<your-username>.github.io/emacs-d/)**.
+Comprehensive guides, setup instructions, and language-specific workflows are available on our **[Documentation Site](https://suxiaogang223.github.io/kanso-emacs/)**.
 
 ### 🔗 Quick Links
 - **[Getting Started & Installation](docs/setup.md)**
@@ -63,7 +65,7 @@ Ensure you have **Emacs 30.0+** installed, then simply clone and run:
 mv ~/.emacs.d ~/.emacs.d.bak
 
 # 2. Clone the repository
-git clone https://github.com/suxiaogang223/.emacs.d.git ~/.emacs.d
+git clone https://github.com/suxiaogang223/kanso-emacs.git ~/.emacs.d
 
 # 3. Launch Emacs
 emacs

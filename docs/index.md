@@ -1,6 +1,10 @@
-# 📖 Minimalist Emacs Documentation
+<div align="center">
+  <img src="assets/kanso-logo.svg" alt="Kanso Emacs Logo" width="400"/>
+</div>
 
-Welcome to the official documentation for my personal Emacs configuration. This site provides in-depth guides on how the configuration is structured, how to install it, and how to maximize your productivity for various programming languages.
+# 🌿 Kanso Emacs Documentation
+
+Welcome to the official documentation for **Kanso Emacs**. This site provides in-depth guides on how the configuration is structured, how to install it, and how to maximize your productivity for various programming languages.
 
 ## 🎯 The Vision
 

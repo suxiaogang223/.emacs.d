@@ -41,7 +41,7 @@ mv ~/.emacs.d ~/.emacs.d.bak
 ### Step 2: Clone the Repository
 Clone this configuration into your home directory:
 ```bash
-git clone https://github.com/<your-username>/emacs-d.git ~/.emacs.d
+git clone https://github.com/suxiaogang223/kanso-emacs.git ~/.emacs.d
 ```
 
 ### Step 3: First Launch & Bootstrap

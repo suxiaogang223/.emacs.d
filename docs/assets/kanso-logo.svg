@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240" width="800" height="240">
+  <defs>
+    <!-- Solid, muted green for a minimalist, organic feel -->
+    <linearGradient id="gradKanso" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4a7c59"/>
+      <stop offset="100%" stop-color="#2d4a36"/>
+    </linearGradient>
+    <linearGradient id="gradText" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E0E0E0"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background (Optional, using a transparent one for dark mode integration) -->
+  <rect width="800" height="240" fill="transparent"/>
+
+  <!-- Logo Icon: A minimalist Zen circle (Enso) with a single, deliberate gap -->
+  <g transform="translate(60, 40)">
+    <!-- Enso / Circle representing Zen (Kanso) with a gap at the top right -->
+    <circle cx="80" cy="80" r="65" fill="none" stroke="url(#gradKanso)" stroke-width="14" stroke-dasharray="320 80" stroke-linecap="round" transform="rotate(-60 80 80)"/>
+  </g>
+
+  <!-- Typography -->
+  <g transform="translate(260, 110)">
+    <text x="0" y="0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="76" font-weight="700" fill="url(#gradText)" letter-spacing="4">KANSO</text>
+    <text x="5" y="60" font-family="'Fira Code', 'JetBrains Mono', Monaco, monospace" font-size="24" font-weight="400" fill="#888888" letter-spacing="8">EMACS</text>
+  </g>
+</svg>
