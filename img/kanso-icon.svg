@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <linearGradient id="gradKanso" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4a7c59"/>
+      <stop offset="100%" stop-color="#2d4a36"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="160" height="160" fill="transparent"/>
+
+  <g transform="translate(0, 0)">
+    <circle cx="80" cy="80" r="65" fill="none" stroke="url(#gradKanso)" stroke-width="16" stroke-dasharray="320 80" stroke-linecap="round" transform="rotate(-60 80 80)"/>
+  </g>
+</svg>
