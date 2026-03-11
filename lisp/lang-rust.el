@@ -1,10 +1,22 @@
-;;; lang-rust.el --- Rust configuration -*- lexical-binding: t; -*-
+;;; lang-rust.el --- Rust configuration and tooling -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;; This module provides a robust development environment for Rust.
+;; 1. Configures `eglot` with `rust-analyzer` for IDE-like features.
+;; 2. Supports both `rust-mode` and `rust-ts-mode` (Tree-sitter).
+;; 3. Provides intelligent, project-aware `compile-command` for `cargo`.
+;; 4. Adds shortcuts for common Cargo tasks (test, check, doc, etc.).
+
+;;; Code:
 
 (require 'compile)
 (require 'project)
 
+;; -- Language Server Protocol (LSP) --
+;; Register `rust-analyzer` for both standard and Tree-sitter modes.
 (add-to-list 'eglot-server-programs '((rust-mode rust-ts-mode) "rust-analyzer"))
 
+;; -- Tree-sitter Support --
 (defun my-enable-rust-ts-mode ()
   "Prefer `rust-ts-mode' when the tree-sitter Rust grammar is available."
   (when (and (fboundp 'treesit-available-p)
@@ -24,6 +36,7 @@
   (my-enable-rust-ts-mode)
   (message "Installed Rust tree-sitter grammar"))
 
+;; -- Helper Functions --
 (defun my-rust-format-buffer-on-save ()
   "Format the current Rust buffer before saving."
   (when (derived-mode-p 'rust-mode 'rust-ts-mode)
@@ -36,7 +49,11 @@
         (project-root project))))
 
 (defun my-rust-target-command ()
-  "Return a context-aware cargo command for the current buffer."
+  "Return a context-aware cargo command for the current buffer.
+- In `tests/`: `cargo test --test <name>`
+- In `examples/`: `cargo run --example <name>`
+- In `benches/`: `cargo bench --bench <name>`
+- Otherwise: `cargo check`"
   (let* ((root (my-rust-project-root))
          (relative (and root buffer-file-name
                         (file-relative-name buffer-file-name root)))
@@ -70,13 +87,17 @@
      (format "cd %s && cargo doc --no-deps"
              (shell-quote-argument root)))))
 
+;; -- Mode Setup Hook --
 (defun my-rust-setup ()
   "Set up development helpers for Rust buffers."
   (eglot-ensure)
   (company-mode 1)
   (my-rust-set-compile-command))
 
+;; Enable Tree-sitter remapping if available.
 (my-enable-rust-ts-mode)
+
+;; -- Hooks --
 (add-hook 'before-save-hook #'my-rust-format-buffer-on-save)
 (add-hook 'rust-mode-hook #'my-rust-setup)
 (when (fboundp 'rust-ts-mode)
@@ -85,27 +106,24 @@
 (when (fboundp 'rust-ts-mode)
   (add-electric-to-hook 'rust-ts-mode-hook))
 
+;; -- Keybindings --
+(defun my-rust-bind-keys (map)
+  "Bind Rust-specific keys in MAP."
+  (define-key map (kbd "C-c C-f") #'rust-format-buffer)
+  (define-key map (kbd "C-c C-k") #'rust-check)
+  (define-key map (kbd "C-c C-c") #'rust-compile)
+  (define-key map (kbd "C-c C-b") #'rust-compile-release)
+  (define-key map (kbd "C-c C-r") #'rust-run)
+  (define-key map (kbd "C-c C-e") #'rust-run-release)
+  (define-key map (kbd "C-c C-t") #'rust-test)
+  (define-key map (kbd "C-c C-l") #'rust-run-clippy)
+  (define-key map (kbd "C-c C-d") #'my-rust-doc))
+
 (with-eval-after-load 'rust-mode
-  (define-key rust-mode-map (kbd "C-c C-f") #'rust-format-buffer)
-  (define-key rust-mode-map (kbd "C-c C-k") #'rust-check)
-  (define-key rust-mode-map (kbd "C-c C-c") #'rust-compile)
-  (define-key rust-mode-map (kbd "C-c C-b") #'rust-compile-release)
-  (define-key rust-mode-map (kbd "C-c C-r") #'rust-run)
-  (define-key rust-mode-map (kbd "C-c C-e") #'rust-run-release)
-  (define-key rust-mode-map (kbd "C-c C-t") #'rust-test)
-  (define-key rust-mode-map (kbd "C-c C-l") #'rust-run-clippy)
-  (define-key rust-mode-map (kbd "C-c C-d") #'my-rust-doc))
+  (my-rust-bind-keys rust-mode-map))
 
 (with-eval-after-load 'rust-ts-mode
-  (define-key rust-ts-mode-map (kbd "C-c C-f") #'rust-format-buffer)
-  (define-key rust-ts-mode-map (kbd "C-c C-k") #'rust-check)
-  (define-key rust-ts-mode-map (kbd "C-c C-c") #'rust-compile)
-  (define-key rust-ts-mode-map (kbd "C-c C-b") #'rust-compile-release)
-  (define-key rust-ts-mode-map (kbd "C-c C-r") #'rust-run)
-  (define-key rust-ts-mode-map (kbd "C-c C-e") #'rust-run-release)
-  (define-key rust-ts-mode-map (kbd "C-c C-t") #'rust-test)
-  (define-key rust-ts-mode-map (kbd "C-c C-l") #'rust-run-clippy)
-  (define-key rust-ts-mode-map (kbd "C-c C-d") #'my-rust-doc))
+  (my-rust-bind-keys rust-ts-mode-map))
 
 (provide 'lang-rust)
 

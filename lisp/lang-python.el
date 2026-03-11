@@ -1,5 +1,15 @@
-;;; lang-python.el --- Python configuration -*- lexical-binding: t; -*-
+;;; lang-python.el --- Python configuration and tooling -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;; This module provides a complete Python development environment.
+;; 1. Configures `eglot` with `pyright-langserver`.
+;; 2. Supports both `python-mode` and `python-ts-mode` (Tree-sitter).
+;; 3. Integrates `Ruff` for lightning-fast formatting on save.
+;; 4. Manages virtual environments via `pyvenv`.
+
+;;; Code:
+
+;; -- Tree-sitter Support --
 (defun my-enable-python-ts-mode ()
   "Prefer `python-ts-mode' when tree-sitter Python grammar is available."
   (when (and (fboundp 'treesit-available-p)
@@ -8,8 +18,6 @@
              (treesit-language-available-p 'python))
     (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))))
 
-;; Install the Python tree-sitter grammar with:
-;; M-x my-install-python-treesit-grammar
 (defun my-install-python-treesit-grammar ()
   "Install the Python tree-sitter grammar and enable `python-ts-mode'."
   (interactive)
@@ -21,6 +29,7 @@
   (my-enable-python-ts-mode)
   (message "Installed Python tree-sitter grammar; Python files will use python-ts-mode"))
 
+;; -- Formatting --
 (defun my-python-format-buffer ()
   "Format the current Python buffer with Ruff."
   (when (derived-mode-p 'python-mode 'python-ts-mode)
@@ -39,16 +48,19 @@
   (when (derived-mode-p 'python-mode 'python-ts-mode)
     (my-python-format-buffer)))
 
+;; -- Virtual Environments --
 (use-package pyvenv
   :ensure nil
   :if (locate-library "pyvenv")
   :config
   (pyvenv-mode 1))
 
+;; -- Language Server Protocol (LSP) --
 (add-to-list 'eglot-server-programs
              '((python-mode python-ts-mode)
                "pyright-langserver" "--stdio"))
 
+;; -- Hooks & Setup --
 (my-enable-python-ts-mode)
 (add-hook 'before-save-hook #'my-python-format-buffer-on-save)
 (add-hook 'python-mode-hook #'eglot-ensure)
@@ -58,6 +70,7 @@
 (add-electric-to-hook 'python-mode-hook)
 (add-electric-to-hook 'python-ts-mode-hook)
 
+;; -- Keybindings --
 (with-eval-after-load 'python
   (define-key python-mode-map (kbd "C-c C-z") #'run-python)
   (when (boundp 'python-ts-mode-map)

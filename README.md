@@ -1,62 +1,78 @@
-# My Minimalist Emacs
+# 🚀 Minimalist Emacs Configuration
 
-Minimal Emacs configuration with a small modular layout.
+<div align="center">
 
-## Structure
+[![Emacs Version](https://img.shields.io/badge/Emacs-30.0+-blueviolet.svg?style=for-the-badge&logo=gnu-emacs&logoColor=white)](https://www.gnu.org/software/emacs/)
+[![Documentation](https://img.shields.io/badge/Docs-GitHub%20Pages-blue.svg?style=for-the-badge&logo=github)](https://<your-username>.github.io/emacs-d/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
-- `init.el`: thin entrypoint that loads modules
-- `lisp/init-package.el`: package bootstrap and missing-package recovery
-- `lisp/init-completion.el`: minibuffer completion UI
-- `lisp/init-editing.el`: shared editing behavior
-- `lisp/init-tools.el`: proxy, `company`, `eglot`, `eldoc`
-- `lisp/init-ui.el`: UI and theme behavior
-- `lisp/lang-*.el`: language-specific configuration
+*A high-performance, modular, and modern Emacs configuration tailored for software engineering.*<br>
+*Built to leverage native features like `eglot` and `tree-sitter` for a full IDE experience without the bloat.*
 
-## Completion stack
+</div>
 
-- `vertico`: minibuffer candidate UI
-- `marginalia`: richer annotations
-- `orderless`: flexible matching
-- `consult`: search and navigation commands
+---
 
-Common bindings:
+## 📖 Documentation
 
-- `C-s`: `consult-line`
-- `C-x b`: `consult-buffer`
-- `M-y`: `consult-yank-pop`
-- `M-g g`: `consult-goto-line`
-- `M-g i`: `consult-imenu`
+Comprehensive guides, setup instructions, and language-specific workflows are available on our **[Documentation Site](https://<your-username>.github.io/emacs-d/)**.
 
-## Package install behavior
+### 🔗 Quick Links
+- **[Getting Started & Installation](docs/setup.md)**
+- **[🐍 Python Development](docs/lang-python.md)**
+- **[🦀 Rust Development](docs/lang-rust.md)**
+- **[❄️ C/C++ Development](docs/lang-cc.md)**
+- **[🎾 Racket Development](docs/lang-racket.md)**
 
-On startup, Emacs checks `package-selected-packages` and only tries to install packages that are missing locally.
-If package download fails, startup continues and emits a warning instead of aborting.
+---
 
-Useful commands:
+## ✨ Design Philosophy
 
-- `M-x my-missing-selected-packages`: show which selected packages are still missing
-- `M-x my-bootstrap-packages`: refresh archives and install all missing selected packages
+1. **Native First**: Prioritize built-in Emacs features (`eglot`, `project.el`, `treesit`) over heavy third-party frameworks.
+2. **Lightning Fast**: Lazy-loading and a modular architecture ensure sub-second startup times.
+3. **Discoverable**: Powered by a modern completion stack (`Vertico`, `Consult`, `Marginalia`, `Orderless`) to make finding files, commands, and code effortless.
+4. **Resilient**: Intelligent package bootstrapping ensures a smooth setup on any new machine, even with spotty network connections.
 
-## New machine setup
+---
 
-1. Start Emacs once.
-2. If packages were not installed automatically, run `M-x my-bootstrap-packages`.
-3. Install external language tools as needed:
-   - Python: `uv tool install pyright ruff`
-   - C/C++: install `clangd`
-   - Rust: install `rust-analyzer`
+## 📂 Architecture
 
-## Notes
+The configuration is strictly modular, keeping `init.el` clean and declarative.
 
-- Python tree-sitter grammar can be installed with `M-x my-install-python-treesit-grammar`.
-- Python virtual environments can be activated with `M-x pyvenv-activate`.
-- C/C++ tree-sitter grammars can be installed with `M-x my-install-c/c++-treesit-grammars`.
-- Rust tree-sitter grammar can be installed with `M-x my-install-rust-treesit-grammar`.
-- C/C++ uses `clangd` and `clang-format`; Rust uses `rust-analyzer`, `cargo`, and `rustfmt`.
-- Racket uses `racket-mode` with `racket-xp-mode`, `racket-run`, `racket-test`, and `racket-repl`.
-- C/C++ detects `Makefile` and common CMake build directories to set `compile-command`.
-- C/C++ passes `--compile-commands-dir` to `clangd` when `compile_commands.json` is found under the project or a common build directory.
-- For CMake projects without a build directory yet, `compile-command` defaults to configure with `CMAKE_EXPORT_COMPILE_COMMANDS=ON` and then build.
-- Rust sets a context-aware `compile-command`: tests use `cargo test --test`, examples use `cargo run --example`, benches use `cargo bench --bench`, and other files default to `cargo check`.
-- Rust adds shortcuts for `cargo check`, release build/run, clippy, and `cargo doc --no-deps`.
-- Racket adds shortcuts for docs, profile, and switching between source and REPL.
+```text
+~/.emacs.d/
+├── init.el                 # 🏁 Core settings and module loader
+├── lisp/                   # 🏗️ Configuration modules
+│   ├── init-package.el     # 📦 Package management & auto-bootstrap
+│   ├── init-completion.el  # 🔍 Vertico, Consult, Marginalia stack
+│   ├── init-editing.el     # ✍️ Global editing behaviors
+│   ├── init-tools.el       # 🛠️ Magit, Company, Eglot
+│   ├── init-ui.el          # 💄 Theming and visual decluttering
+│   └── lang-*.el           # 🌐 Language-specific environments
+└── docs/                   # 📖 Documentation source
+```
+
+---
+
+## 🚀 Quick Start
+
+Ensure you have **Emacs 30.0+** installed, then simply clone and run:
+
+```bash
+# 1. Backup existing config (if any)
+mv ~/.emacs.d ~/.emacs.d.bak
+
+# 2. Clone the repository
+git clone https://github.com/suxiaogang223/.emacs.d.git ~/.emacs.d
+
+# 3. Launch Emacs
+emacs
+```
+
+*Emacs will automatically download and install required packages upon the first launch.*
+
+---
+
+## 📝 License
+
+This configuration is open-source and available under the [MIT License](LICENSE). Feel free to fork, modify, and use it as the foundation for your own setup.

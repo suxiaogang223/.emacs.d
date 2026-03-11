@@ -1,13 +1,24 @@
-;;; init-package.el --- Package bootstrap -*- lexical-binding: t; -*-
+;;; init-package.el --- Package bootstrap and management -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;; This module handles package management and bootstrapping.
+;; 1. Configures reliable package mirrors (TSinghua mirrors by default).
+;; 2. Automates the installation of missing packages listed in `package-selected-packages`.
+;; 3. Provides `my-bootstrap-packages` for new machine setups.
+
+;;; Code:
 
 (require 'seq)
 (require 'package)
 
+;; -- Package Mirror Configuration --
+;; Use TSinghua mirrors for faster and more reliable package downloads in mainland China.
 (setopt package-archives
         '(("gnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
           ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
           ("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
+;; Initialize package system if not already done.
 (unless package--initialized
   (package-initialize))
 
@@ -33,7 +44,8 @@ When REFRESH is non-nil, refresh package archives before installing."
 (defun my-install-missing-selected-packages (&optional noerror)
   "Install packages missing from `package-selected-packages'.
 
-When NOERROR is non-nil, report failures as warnings and keep startup going."
+When NOERROR is non-nil, report failures as warnings and keep startup going.
+This ensures a broken network doesn't block Emacs from starting."
   (let ((missing (my-missing-selected-packages)))
     (when missing
       (condition-case err
@@ -68,6 +80,8 @@ Use this on a new machine or after clearing `elpa/'."
                    (mapconcat #'symbol-name missing ", ")))
       (message "All selected packages are already installed."))))
 
+;; -- Setup use-package --
+;; We use `use-package` for declarative configuration.
 (my-package-ensure-installed 'use-package t)
 
 (eval-when-compile
@@ -75,6 +89,8 @@ Use this on a new machine or after clearing `elpa/'."
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+
+;; Automatically try to install missing packages on startup without blocking.
 (my-install-missing-selected-packages 'noerror)
 
 (provide 'init-package)
