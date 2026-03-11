@@ -54,3 +54,7 @@ Useful commands:
 - Rust tree-sitter grammar can be installed with `M-x my-install-rust-treesit-grammar`.
 - C/C++ uses `clangd` and `clang-format`; Rust uses `rust-analyzer`, `cargo`, and `rustfmt`.
 - Racket uses `racket-mode` with `racket-xp-mode`, `racket-run`, `racket-test`, and `racket-repl`.
+- C/C++ detects `Makefile` and common CMake build directories to set `compile-command`.
+- C/C++ passes `--compile-commands-dir` to `clangd` when `compile_commands.json` is found under the project or a common build directory.
+- For CMake projects without a build directory yet, `compile-command` defaults to configure with `CMAKE_EXPORT_COMPILE_COMMANDS=ON` and then build.
+- Racket adds shortcuts for docs, profile, and switching between source and REPL.

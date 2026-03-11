@@ -1,6 +1,11 @@
 ;;; lang-cc.el --- C and C++ configuration -*- lexical-binding: t; -*-
 
 (require 'compile)
+(require 'project)
+
+(defconst my-c/c++-cmake-build-directories
+  '("build" "cmake-build-debug" "cmake-build-release" "out/build")
+  "Common CMake build directories to probe from a project root.")
 
 (defun my-enable-c-ts-modes ()
   "Prefer tree-sitter C and C++ modes when grammars are available."
@@ -39,24 +44,114 @@
        (current-buffer) t "*clang-format*")
       (goto-char (min point-pos (point-max))))))
 
+(defun my-c/c++-project-root ()
+  "Return the current C or C++ project root."
+  (or (when-let ((project (project-current nil)))
+        (project-root project))
+      default-directory))
+
+(defun my-c/c++-find-build-directory (root)
+  "Return a CMake build directory under ROOT, if one exists."
+  (seq-find
+   #'file-directory-p
+   (mapcar (lambda (dir)
+             (expand-file-name dir root))
+           my-c/c++-cmake-build-directories)))
+
+(defun my-c/c++-find-compile-commands (root)
+  "Return the path to `compile_commands.json' for ROOT, if one exists."
+  (let ((root-db (expand-file-name "compile_commands.json" root))
+        (build-dir (my-c/c++-find-build-directory root)))
+    (cond
+     ((file-exists-p root-db) root-db)
+     (build-dir
+      (let ((build-db (expand-file-name "compile_commands.json" build-dir)))
+        (when (file-exists-p build-db)
+          build-db))))))
+
+(defun my-c/c++-cmake-root (root)
+  "Return the nearest CMake project root from ROOT, if any."
+  (locate-dominating-file root "CMakeLists.txt"))
+
+(defun my-c/c++-default-build-directory (root)
+  "Return the preferred build directory for the CMake project at ROOT."
+  (or (my-c/c++-find-build-directory root)
+      (expand-file-name "build" root)))
+
+(defun my-c/c++-cmake-configure-command (root)
+  "Return a configure command for the CMake project at ROOT."
+  (let ((build-dir (my-c/c++-default-build-directory root)))
+    (format "cmake -S %s -B %s -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+            (shell-quote-argument root)
+            (shell-quote-argument build-dir))))
+
+(defun my-c/c++-cmake-build-command (root)
+  "Return a build command for the CMake project at ROOT."
+  (format "cmake --build %s"
+          (shell-quote-argument (my-c/c++-default-build-directory root))))
+
+(defun my-c/c++-clangd-contact (_interactive _project)
+  "Return a `clangd' contact spec with an optional compile database directory."
+  (let* ((root (my-c/c++-project-root))
+         (compile-db (my-c/c++-find-compile-commands root)))
+    (append
+     (list "clangd")
+     (when compile-db
+       (list (format "--compile-commands-dir=%s"
+                     (directory-file-name
+                      (file-name-directory compile-db))))))))
+
+(defun my-c/c++-single-file-output ()
+  "Return the default output path for the current translation unit."
+  (when buffer-file-name
+    (expand-file-name
+     (file-name-sans-extension
+      (file-name-nondirectory buffer-file-name))
+     default-directory)))
+
 (defun my-c/c++-set-compile-command ()
   "Populate a sensible per-buffer compile command for C and C++."
-  (setq-local compile-command
-              (cond
-               ((locate-dominating-file default-directory "Makefile")
-                "make -k")
-               ((locate-dominating-file default-directory "compile_commands.json")
-                "cmake --build build")
-               (buffer-file-name
-                (format "%s %s -o %s"
-                        (if (derived-mode-p 'c-mode 'c-ts-mode)
-                            "clang -std=c17 -Wall -Wextra"
-                          "clang++ -std=c++20 -Wall -Wextra")
-                        (shell-quote-argument buffer-file-name)
-                        (shell-quote-argument
-                         (file-name-sans-extension
-                          (file-name-nondirectory buffer-file-name)))))
-               (t compile-command))))
+  (let* ((root (my-c/c++-project-root))
+         (make-root (or (locate-dominating-file root "Makefile")
+                        (locate-dominating-file root "makefile")
+                        (locate-dominating-file root "GNUmakefile")))
+         (cmake-root (my-c/c++-cmake-root root))
+         (compile-db (and cmake-root (my-c/c++-find-compile-commands cmake-root))))
+    (setq-local compile-command
+                (cond
+                 (make-root
+                  (format "make -k -C %s"
+                          (shell-quote-argument make-root)))
+                 (compile-db
+                  (my-c/c++-cmake-build-command cmake-root))
+                 (cmake-root
+                  (format "%s && %s"
+                          (my-c/c++-cmake-configure-command cmake-root)
+                          (my-c/c++-cmake-build-command cmake-root)))
+                 (buffer-file-name
+                  (format "%s %s -o %s"
+                          (if (derived-mode-p 'c-mode 'c-ts-mode)
+                              "clang -std=c17 -Wall -Wextra"
+                            "clang++ -std=c++20 -Wall -Wextra")
+                          (shell-quote-argument buffer-file-name)
+                          (shell-quote-argument (my-c/c++-single-file-output))))
+                 (t compile-command)))))
+
+(defun my-c/c++-run ()
+  "Run the current single-file C or C++ binary."
+  (interactive)
+  (let ((binary (my-c/c++-single-file-output)))
+    (unless (and binary (file-executable-p binary))
+      (user-error "No executable found at %s; compile first" binary))
+    (compile (shell-quote-argument binary) t)))
+
+(defun my-c/c++-configure-cmake ()
+  "Configure the current CMake project and export `compile_commands.json'."
+  (interactive)
+  (let ((root (my-c/c++-cmake-root (my-c/c++-project-root))))
+    (unless root
+      (user-error "No CMake project found"))
+    (compile (my-c/c++-cmake-configure-command root))))
 
 (defun my-c/c++-setup ()
   "Set up development helpers for C and C++ buffers."
@@ -64,7 +159,9 @@
   (company-mode 1)
   (my-c/c++-set-compile-command))
 
-(add-to-list 'eglot-server-programs '((c++-mode c-mode c-ts-mode c++-ts-mode) "clangd"))
+(add-to-list 'eglot-server-programs
+             `((c++-mode c-mode c-ts-mode c++-ts-mode)
+               . ,#'my-c/c++-clangd-contact))
 (my-enable-c-ts-modes)
 (add-hook 'c-mode-hook #'my-c/c++-setup)
 (add-hook 'c++-mode-hook #'my-c/c++-setup)
@@ -82,7 +179,9 @@
 (with-eval-after-load 'cc-mode
   (define-key c-mode-base-map (kbd "C-c C-c") #'compile)
   (define-key c-mode-base-map (kbd "C-c C-k") #'recompile)
-  (define-key c-mode-base-map (kbd "C-c C-f") #'my-clang-format-buffer))
+  (define-key c-mode-base-map (kbd "C-c C-f") #'my-clang-format-buffer)
+  (define-key c-mode-base-map (kbd "C-c C-m") #'my-c/c++-configure-cmake)
+  (define-key c-mode-base-map (kbd "C-c C-r") #'my-c/c++-run))
 
 (provide 'lang-cc)
 
