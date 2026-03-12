@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        emacs_version:
+          - "30.1"
+          - "snapshot"
+    env:
+      KANSO_PACKAGE_ARCHIVES_PROFILE: official
+      KANSO_PACKAGE_USER_DIR: ${{ runner.temp }}/elpa-${{ matrix.emacs_version }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Emacs
+        uses: purcell/setup-emacs@master
+        with:
+          version: ${{ matrix.emacs_version }}
+
+      - name: Cache packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.KANSO_PACKAGE_USER_DIR }}
+          key: ${{ runner.os }}-${{ matrix.emacs_version }}-elpa-${{ hashFiles('init.el', 'lisp/*.el') }}
+
+      - name: Bootstrap packages
+        run: |
+          mkdir -p "$KANSO_PACKAGE_USER_DIR"
+          make bootstrap
+
+      - name: Smoke test
+        run: |
+          make smoke
+
+      - name: ERT suite
+        run: |
+          make test

@@ -85,6 +85,24 @@ emacs
 
 ---
 
+## ✅ Testing & CI
+
+Local smoke test:
+
+```bash
+make smoke
+```
+
+Local ERT suite:
+
+```bash
+make test
+```
+
+GitHub Actions runs the same checks on Emacs `30.1` and `snapshot`.
+
+---
+
 ## 📝 License
 
 This configuration is open-source and available under the [MIT License](LICENSE). Feel free to fork, modify, and use it as the foundation for your own setup.

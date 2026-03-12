@@ -12,11 +12,35 @@
 (require 'package)
 
 ;; -- Package Mirror Configuration --
-;; Use TSinghua mirrors for faster and more reliable package downloads in mainland China.
+;; Use TSinghua mirrors by default, with an opt-in CI override for official hosts.
+(defconst kanso-package-archives-tsinghua
+  '(("gnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+    ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
+    ("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))
+  "Preferred ELPA archives for the default local setup.")
+
+(defconst kanso-package-archives-official
+  '(("gnu" . "https://elpa.gnu.org/packages/")
+    ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+    ("melpa" . "https://melpa.org/packages/"))
+  "Official ELPA archives used for CI and cross-region fallback.")
+
+(defun kanso-package-archives-for-profile (profile)
+  "Return package archives for PROFILE."
+  (pcase profile
+    ("official" kanso-package-archives-official)
+    (_ kanso-package-archives-tsinghua)))
+
+(defun kanso-package-archives-profile ()
+  "Return the active package archive profile."
+  (let ((profile (getenv "KANSO_PACKAGE_ARCHIVES_PROFILE")))
+    (if (equal profile "official")
+        "official"
+      "tsinghua")))
+
 (setopt package-archives
-        '(("gnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-          ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-          ("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+        (kanso-package-archives-for-profile
+         (kanso-package-archives-profile)))
 
 ;; Initialize package system if not already done.
 (unless package--initialized

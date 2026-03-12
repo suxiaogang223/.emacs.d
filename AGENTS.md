@@ -6,7 +6,9 @@ This repository is an Emacs configuration, not an application library. `init.el`
 
 ## Build, Test, and Development Commands
 
-- `emacs --batch -Q -l init.el`: smoke-test that the config loads without startup errors.
+- `make smoke`: smoke-test that the config loads without startup errors.
+- `make test`: run the full ERT suite.
+- `make bootstrap`: install missing packages in batch mode.
 - `emacs --batch -Q --eval "(progn (load-file \"init.el\") ...)"`: verify a specific command, keybinding, or module in batch mode.
 - `M-x bootstrap-packages`: install missing packages on a new machine.
 - `M-x missing-selected-packages`: inspect package drift without changing state.
@@ -23,7 +25,8 @@ When simplifying or extending the configuration, follow this principle inspired 
 
 There is no separate test framework today. The minimum bar is:
 
-- `emacs --batch -Q -l init.el`
+- `make smoke`
+- `make test`
 - one targeted batch check for the feature you changed
 
 Examples include verifying `eglot-server-programs`, checking `compile-command`, or asserting a keybinding with `lookup-key`.
