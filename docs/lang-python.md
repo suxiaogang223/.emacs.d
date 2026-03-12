@@ -39,6 +39,7 @@ Before starting work on a project, activate its virtual environment:
 
 ### 3. Interactive REPL
 Send code to an interactive Python shell for quick testing:
+
 | Shortcut | Action |
 | :--- | :--- |
 | `C-c C-z` | Open or switch to the Python REPL. |
