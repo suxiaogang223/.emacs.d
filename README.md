@@ -10,6 +10,7 @@
 
 *A high-performance, modular, and modern Emacs configuration tailored for software engineering.*<br>
 *Kanso (簡素) means simplicity; eliminating clutter to reveal the essential.*
+*Motto: 如无必要，勿增代码 - Do not add code unless it is necessary.*
 
 </div>
 
@@ -41,6 +42,7 @@ Comprehensive guides, setup instructions, and language-specific workflows are av
 2. **Lightning Fast**: Lazy-loading and a modular architecture ensure sub-second startup times.
 3. **Discoverable**: Powered by a modern completion stack (`Vertico`, `Consult`, `Marginalia`, `Orderless`) to make finding files, commands, and code effortless.
 4. **Resilient**: Package bootstrap is tolerant of missing packages and network hiccups, with a manual recovery path via `M-x bootstrap-packages`.
+5. **Kanso By Default**: Inspired by Occam's razor, `如无必要，勿增代码` means "Do not add code unless it is necessary." Prefer defaults, fewer layers, and less code unless the extra complexity clearly pays for itself.
 
 ---
 

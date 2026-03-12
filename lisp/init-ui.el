@@ -27,12 +27,10 @@
 
 ;; -- Dashboard (Startup Screen) --
 (defconst kanso-dashboard-footer-messages
-  '("Simple tools. Clear mind."
-    "Open less. Build more."
-    "Small config. Sharp workflow."
-    "Quiet screen. Serious work."
-    "Readable code, repeatable habits."
-    "Stay focused. Ship clean.")
+  '("如无必要，勿增实体"
+    "本来无一物，何处惹尘埃"
+    "Noting, everything"
+    "Keep it simple, stupid")
   "Footer messages displayed on the dashboard.")
 
 (use-package dashboard

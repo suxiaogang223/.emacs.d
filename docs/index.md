@@ -9,6 +9,7 @@ Welcome to the official documentation for **Kanso Emacs**. This site provides in
 This configuration is built for **speed, simplicity, and modern engineering**. 
 Rather than relying on heavy, monolithic frameworks (like Spacemacs or Doom Emacs), this setup is crafted from the ground up to be:
 
+- **Kanso**: Inspired by Occam's razor, `如无必要，勿增代码` means "Do not add code unless it is necessary." Prefer less code, fewer overrides, and more reuse of solid Emacs defaults.
 - **Transparent**: You can read and understand every line of `init.el` and the `lisp/` modules.
 - **Modern**: Heavily utilizes Emacs 29/30 built-in features like `eglot` (LSP) and `tree-sitter` (Syntax Highlighting).
 - **Aesthetic**: Minimal UI elements, maximizing screen real estate for your code.

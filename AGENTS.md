@@ -17,6 +17,8 @@ When changing language modules, prefer targeted batch checks over manual guesswo
 
 Use Emacs Lisp with `lexical-binding: t`. Indent with spaces using standard Emacs Lisp style; do not introduce tabs. Keep modules small and responsibility-focused. Use `init-` prefixes for shared modules and `lang-` prefixes for language modules. Prefer descriptive helper names; add a module- or domain-specific prefix only when it avoids ambiguity.
 
+When simplifying or extending the configuration, follow this principle inspired by Occam's razor: `如无必要，勿增代码` ("Do not add code unless it is necessary"). In practice, prefer fewer layers, fewer overrides, and less custom code. Add configuration only when it clearly improves behavior, clarity, or maintainability.
+
 ## Testing Guidelines
 
 There is no separate test framework today. The minimum bar is:
