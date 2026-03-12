@@ -15,7 +15,7 @@ jobs:
           - "snapshot"
     env:
       KANSO_PACKAGE_ARCHIVES_PROFILE: official
-      KANSO_PACKAGE_USER_DIR: ${{ runner.temp }}/elpa-${{ matrix.emacs_version }}
+      KANSO_PACKAGE_USER_DIR: ${{ github.workspace }}/.cache/elpa-${{ matrix.emacs_version }}
 
     steps:
       - uses: actions/checkout@v4
