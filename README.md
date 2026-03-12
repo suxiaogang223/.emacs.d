@@ -99,7 +99,7 @@ Local ERT suite:
 make test
 ```
 
-GitHub Actions runs the same checks on Emacs `30.1` and `snapshot`.
+GitHub Actions runs the same checks on Emacs `snapshot`.
 
 ---
 
