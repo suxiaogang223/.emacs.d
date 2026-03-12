@@ -1,15 +1,15 @@
 # 📝 Org and Markdown Writing Workflow
 
-The document configuration (`lisp/init-docs.el`) adds a focused writing environment for `org-mode`, `markdown-mode`, and `gfm-mode`. It is designed for technical notes, project documentation, and README authoring rather than a full publishing stack.
+The document configuration (`lisp/init-docs.el`) keeps writing support intentionally light. It adds a few practical defaults for `org-mode`, `markdown-mode`, and `gfm-mode` without trying to turn Emacs into a full publishing framework.
 
 ---
 
 ## ✨ Features
 
-- **Shared Writing UI**: Prose buffers use soft wrapping, hide line numbers, and switch to mixed-pitch text for easier long-form reading.
-- **Code-Friendly Layout**: Source blocks, tables, metadata, and inline code stay fixed-pitch so technical documents remain aligned.
-- **Org Visual Cleanup**: `org-indent-mode`, native source block highlighting, and `org-modern` make headings and lists easier to scan.
+- **Shared Writing UI**: Prose buffers use soft wrapping and hide line numbers.
+- **Org Visual Cleanup**: `org-indent-mode` and `org-modern` make headings and lists easier to scan.
 - **Markdown Support**: `.md` files open in `markdown-mode`, while `README.md` uses `gfm-mode`.
+- **Main-Font Markdown Code Blocks**: Markdown code blocks inherit the main Emacs font instead of forcing a separate fixed-pitch face.
 - **Table of Contents Helpers**: `toc-org` is enabled for both Org and Markdown buffers.
 
 ---
@@ -38,9 +38,10 @@ For Markdown preview, `markdown-preview` opens the rendered result in your brows
 
 Useful defaults that are active automatically:
 
-- Source blocks use native font-lock highlighting.
-- TAB inside source blocks follows the language mode behavior.
+- Visual line wrapping is enabled.
+- Line numbers are disabled in prose buffers.
 - Content inside source editing buffers is not indented an extra level.
+- `org-indent-mode` is enabled automatically.
 
 ### Markdown / GFM
 
@@ -57,6 +58,6 @@ Useful defaults that are active automatically:
 ## ⚙️ Under the Hood
 
 - `docs-text-ui` applies the shared prose editing defaults.
-- `org-docs-setup` enables Org-specific behavior on top of the shared UI.
-- `markdown-docs-setup` applies the same writing-focused UI to Markdown and GFM buffers.
-- Optional enhancements are guarded so startup still succeeds even if packages are temporarily unavailable during installation.
+- `org-mode` adds `org-indent-mode` on top of the shared UI.
+- `README.md` is explicitly mapped to `gfm-mode`.
+- `markdown-code-face` is remapped to inherit `default`, so Markdown code blocks match the main editor font.

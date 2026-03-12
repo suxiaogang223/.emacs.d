@@ -9,7 +9,7 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
 *A high-performance, modular, and modern Emacs configuration tailored for software engineering.*<br>
-*Kanso (簡素) means simplicity; eliminating clutter to reveal the essential.*
+*Kanso (簡素) means simplicity; eliminating clutter to reveal the essential.*<br>
 *Motto: 如无必要，勿增代码 - Do not add code unless it is necessary.*
 
 </div>

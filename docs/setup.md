@@ -10,7 +10,7 @@ To get the full experience, you need a modern version of Emacs and a few system-
 
 ### 1. Emacs Version
 - **Emacs 30.0+** is highly recommended.
-- It must be compiled with **Native Compilation** (`--with-native-compilation`) and **Tree-sitter** (`--with-tree-sitter`) support.
+- Native compilation and Tree-sitter support are strongly recommended, especially if you want the Tree-sitter language remapping in the language modules.
 - *macOS Users*: You can install this via Homebrew: 
   ```bash
   brew install emacs-plus@30 --with-native-comp --with-xwidgets
@@ -61,6 +61,25 @@ If you want to inspect package drift without changing anything, run:
 ```text
 M-x missing-selected-packages
 ```
+
+If you prefer to bootstrap packages from the terminal, use:
+```bash
+make bootstrap
+```
+
+---
+
+## ✅ Validation
+
+After setup, you can verify the configuration from the command line:
+
+```bash
+make smoke
+make test
+```
+
+- `make smoke` checks that `init.el` loads successfully in batch mode.
+- `make test` runs the ERT suite for stable config behavior.
 
 ---
 
