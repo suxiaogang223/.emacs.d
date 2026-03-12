@@ -11,8 +11,6 @@
 
 (require 'compile)
 (require 'project)
-(require 'rust-cargo nil t)
-(require 'rust-rustfmt nil t)
 
 ;; -- Language Server Protocol (LSP) --
 ;; Register `rust-analyzer` for both standard and Tree-sitter modes.
@@ -37,12 +35,6 @@
   (treesit-install-language-grammar 'rust)
   (enable-rust-ts-mode)
   (message "Installed Rust tree-sitter grammar"))
-
-;; -- Helper Functions --
-(defun rust-format-buffer-on-save ()
-  "Format the current Rust buffer before saving."
-  (when (derived-mode-p 'rust-mode 'rust-ts-mode)
-    (format-rust-buffer)))
 
 (defun rust-project-root ()
   "Return the current Rust project root."
@@ -151,23 +143,19 @@
   (eglot-ensure)
   (enable-company-mode-if-available)
   (rust-set-compile-command)
-  (add-hook 'before-save-hook #'rust-format-buffer-on-save nil t))
+  (add-hook 'before-save-hook #'format-rust-buffer nil t))
 
 ;; Enable Tree-sitter remapping if available.
 (enable-rust-ts-mode)
 
 ;; -- Hooks --
-(add-hook 'rust-mode-hook #'rust-setup)
-(when (fboundp 'rust-ts-mode)
-  (add-hook 'rust-ts-mode-hook #'rust-setup))
-(add-electric-to-hook 'rust-mode-hook)
-(when (fboundp 'rust-ts-mode)
-  (add-electric-to-hook 'rust-ts-mode-hook))
+(dolist (hook '(rust-mode-hook rust-ts-mode-hook))
+  (add-hook hook #'rust-setup)
+  (add-electric-to-hook hook))
 
 ;; -- Keybindings --
 (defun rust-bind-keys (map)
   "Bind Rust-specific keys in MAP."
-  (define-key map (kbd "C-c C-f") #'format-rust-buffer)
   (define-key map (kbd "C-c C-k") #'rust-check-project)
   (define-key map (kbd "C-c C-c") #'rust-compile-project)
   (define-key map (kbd "C-c C-b") #'rust-build-release)

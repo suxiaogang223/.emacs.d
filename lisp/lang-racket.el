@@ -1,17 +1,12 @@
 ;;; lang-racket.el --- Racket configuration -*- lexical-binding: t; -*-
 
-(defun racket-setup ()
-  "Set up development helpers for Racket buffers."
-  (enable-company-mode-if-available)
-  (racket-xp-mode 1))
-
-(add-hook 'racket-mode-hook #'racket-setup)
+(add-hook 'racket-mode-hook #'enable-company-mode-if-available)
+(add-hook 'racket-mode-hook #'racket-xp-mode)
 (add-electric-to-hook 'racket-mode-hook)
 
 (with-eval-after-load 'racket-mode
   (define-key racket-mode-map (kbd "C-c C-z") #'racket-repl)
   (define-key racket-mode-map (kbd "C-c C-r") #'racket-run)
-  (define-key racket-mode-map (kbd "C-c C-t") #'racket-test)
   (define-key racket-mode-map (kbd "C-c C-d") #'racket-xp-documentation)
   (define-key racket-mode-map (kbd "C-c C-s") #'racket-documentation-search)
   (define-key racket-mode-map (kbd "C-c C-p") #'racket-profile)

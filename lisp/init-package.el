@@ -22,18 +22,6 @@
 (unless package--initialized
   (package-initialize))
 
-(defun refresh-package-archives ()
-  "Refresh package archives."
-  (package-refresh-contents))
-
-(defun ensure-package-installed (package &optional refresh)
-  "Install PACKAGE when needed.
-When REFRESH is non-nil, refresh package archives before installing."
-  (unless (package-installed-p package)
-    (when (or refresh (null package-archive-contents))
-      (refresh-package-archives))
-    (package-install package)))
-
 (defun missing-selected-packages ()
   "Return selected packages that are not installed locally."
   (seq-filter
@@ -51,7 +39,7 @@ This ensures a broken network doesn't block Emacs from starting."
       (condition-case err
           (progn
             ;; Refresh once when something is missing so new machines can bootstrap.
-            (refresh-package-archives)
+            (package-refresh-contents)
             (dolist (package missing)
               (package-install package)))
         (error
@@ -73,7 +61,7 @@ Use this on a new machine or after clearing `elpa/'."
   (let ((missing (missing-selected-packages)))
     (if missing
         (progn
-          (refresh-package-archives)
+          (package-refresh-contents)
           (dolist (package missing)
             (package-install package))
           (message "Installed missing packages: %s"
@@ -90,7 +78,10 @@ Use this on a new machine or after clearing `elpa/'."
 
 ;; -- Setup use-package --
 ;; We use `use-package` for declarative configuration.
-(ensure-package-installed 'use-package t)
+(unless (package-installed-p 'use-package)
+  (when (null package-archive-contents)
+    (package-refresh-contents))
+  (package-install 'use-package))
 
 (eval-when-compile
   (require 'use-package))

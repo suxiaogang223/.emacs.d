@@ -33,7 +33,6 @@
 
 (require 'eldoc)
 (setq eldoc-echo-area-use-multiline-p nil)
-(setq python-shell-interpreter "python3")
 
 (defun enable-company-mode-if-available ()
   "Enable `company-mode' when it is available."

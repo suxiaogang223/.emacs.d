@@ -43,16 +43,11 @@
        (current-buffer) t "*ruff-format*")
       (goto-char (min point-pos (point-max))))))
 
-(defun python-format-buffer-on-save ()
-  "Format Python buffers with Ruff before saving."
-  (when (derived-mode-p 'python-mode 'python-ts-mode)
-    (ruff-format-buffer)))
-
 (defun python-setup ()
   "Set up development helpers for Python buffers."
   (eglot-ensure)
   (enable-company-mode-if-available)
-  (add-hook 'before-save-hook #'python-format-buffer-on-save nil t))
+  (add-hook 'before-save-hook #'ruff-format-buffer nil t))
 
 ;; -- Virtual Environments --
 (use-package pyvenv
@@ -68,16 +63,9 @@
 
 ;; -- Hooks & Setup --
 (enable-python-ts-mode)
-(add-hook 'python-mode-hook #'python-setup)
-(add-hook 'python-ts-mode-hook #'python-setup)
-(add-electric-to-hook 'python-mode-hook)
-(add-electric-to-hook 'python-ts-mode-hook)
-
-;; -- Keybindings --
-(with-eval-after-load 'python
-  (define-key python-mode-map (kbd "C-c C-z") #'run-python)
-  (when (boundp 'python-ts-mode-map)
-    (define-key python-ts-mode-map (kbd "C-c C-z") #'run-python)))
+(dolist (hook '(python-mode-hook python-ts-mode-hook))
+  (add-hook hook #'python-setup)
+  (add-electric-to-hook hook))
 
 (provide 'lang-python)
 

@@ -17,7 +17,6 @@
 (declare-function auto-dark-mode "auto-dark" (&optional arg))
 
 (use-package auto-dark
-  :ensure t
   :init
   (setq auto-dark-themes '((tango-dark) (tsdh-light)))
   (when (eq system-type 'darwin)
@@ -27,21 +26,6 @@
   :hook (window-setup . enable-auto-dark))
 
 ;; -- Dashboard (Startup Screen) --
-(defun kanso-open-docs ()
-  "Open the Kanso Emacs documentation."
-  (interactive)
-  (browse-url "https://suxiaogang223.github.io/kanso-emacs/"))
-
-(defun kanso-open-repo ()
-  "Open the Kanso Emacs GitHub repository."
-  (interactive)
-  (browse-url "https://github.com/suxiaogang223/kanso-emacs"))
-
-(defun kanso-open-author ()
-  "Open the author's GitHub profile."
-  (interactive)
-  (browse-url "https://github.com/suxiaogang223"))
-
 (defconst kanso-dashboard-footer-messages
   '("Simple tools. Clear mind."
     "Open less. Build more."
@@ -51,12 +35,7 @@
     "Stay focused. Ship clean.")
   "Footer messages displayed on the dashboard.")
 
-(defun kanso-dashboard-setup ()
-  "Apply Kanso-specific dashboard buffer behavior."
-  (display-line-numbers-mode -1))
-
 (use-package dashboard
-  :ensure t
   :init
   (setq initial-buffer-choice 'dashboard-open)
   :config
@@ -75,15 +54,15 @@
           ((,""
             "📖 Docs"
             "Open Documentation"
-            (lambda (&rest _) (kanso-open-docs)))
+            (lambda (&rest _) (browse-url "https://suxiaogang223.github.io/kanso-emacs/")))
            (,""
             "⭐ Repo"
             "View Source Code"
-            (lambda (&rest _) (kanso-open-repo)))
+            (lambda (&rest _) (browse-url "https://github.com/suxiaogang223/kanso-emacs")))
            (,""
             "👤 Author"
             "Visit @suxiaogang223"
-            (lambda (&rest _) (kanso-open-author))))))
+            (lambda (&rest _) (browse-url "https://github.com/suxiaogang223"))))))
   
   ;; Customize widgets
   (setq dashboard-items '((recents   . 5)
@@ -102,19 +81,11 @@
                                     dashboard-insert-footer))
   
   ;; Appearance
-  ;; Keep Kanso minimal: disable heavy third-party icons
-  (setq dashboard-set-heading-icons nil)
-  (setq dashboard-set-file-icons nil)
-  (setq dashboard-set-init-info t)
-  (setq dashboard-set-footer t)
   (setq dashboard-footer-messages kanso-dashboard-footer-messages)
   (setq dashboard-footer-icon "")
 
-  ;; Initialize Dashboard AFTER setting variables
-  (dashboard-setup-startup-hook)
-
-  ;; Hooks for aesthetics
-  (add-hook 'dashboard-mode-hook #'kanso-dashboard-setup))
+  ;; Initialize Dashboard after setting variables.
+  (dashboard-setup-startup-hook))
 
 (provide 'init-ui)
 
